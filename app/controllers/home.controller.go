@@ -1,4 +1,4 @@
-package home
+package controllers
 
 import (
 	"github.com/ajikamaludin/api-raya-ojt/app/services"
@@ -12,9 +12,12 @@ type HomeController struct {
 
 func (hc *HomeController) Home(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"status":   constants.STATUS_SUCCESS,
-		"message":  "Ok",
-		"app_name": hc.Service.Configs.Appconfig.Name,
-		"app_env":  hc.Service.Configs.Appconfig.Env,
+		"status":  constants.STATUS_SUCCESS,
+		"message": "Ok",
+		"data": map[string]string{
+			"app_name": hc.Service.Configs.Appconfig.Name,
+			"app_env":  hc.Service.Configs.Appconfig.Env,
+		},
+		"error": "",
 	})
 }

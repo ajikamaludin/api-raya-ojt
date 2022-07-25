@@ -18,6 +18,7 @@ type DbConfig struct {
 	Dbname      string
 	Username    string
 	Password    string
+	DbTimeZone  string
 	DbIsMigrate bool
 }
 
@@ -59,6 +60,7 @@ func GetInstance() *Configs {
 				Dbname:      os.Getenv("DB_NAME"),
 				Username:    os.Getenv("DB_USER"),
 				Password:    os.Getenv("DB_PASS"),
+				DbTimeZone:  os.Getenv("DB_TIMEZONE"),
 				DbIsMigrate: os.Getenv("DB_ISMIGRATE") == "true",
 			},
 			Jwtconfig: JwtConfig{

@@ -1,7 +1,7 @@
 package home
 
 import (
-	home "github.com/ajikamaludin/api-raya-ojt/app/controllers/home"
+	controller "github.com/ajikamaludin/api-raya-ojt/app/controllers"
 	"github.com/ajikamaludin/api-raya-ojt/app/services"
 	"github.com/gofiber/fiber/v2"
 )
@@ -9,7 +9,7 @@ import (
 func HomeRoutes(app *fiber.App) {
 	route := app.Group("/")
 
-	homeController := home.HomeController{
+	homeController := controller.HomeController{
 		Service: services.New(),
 	}
 

@@ -1,0 +1,705 @@
+swagger: "2.0"
+info:
+  description: "Raya Bank Super Apps API"
+  version: "0.0.1-dev"
+  title: "Raya - OJT"
+  termsOfService: "http://localhost/terms/"
+  contact:
+    email: "aji.kamaludin@bankraya.co.id"
+  license:
+    name: "MIT"
+    url: "https://opensource.org/licenses/MIT"
+host: "localhost"
+basePath: "/api/v1"
+tags:
+- name: "Auth"
+  description: "Everything about your Auth"
+- name: "Transaction"
+  description: "Everything about transaction"
+- name: "Favorite"
+  description: "Everything about favorites"
+- name: "Bank"
+  description: "Everything about bank"
+schemes:
+- "https"
+- "http"
+paths:
+  /login:
+    post:
+      tags:
+      - "Auth"
+      summary: "Login to app"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "User object that needs to be login"
+        schema:
+          $ref: "#/definitions/LoginRequest"
+      responses:
+        "200":
+          description: Ok
+          schema:
+            $ref: "#/definitions/LoginResponse"
+  /register:
+    post:
+      tags:
+      - "Auth"
+      summary: "Register to app"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "User object that needs to be register"
+        schema:
+          $ref: "#/definitions/RegisterRequest"
+      responses:
+        "200":
+          description: Ok
+          schema:
+            $ref: "#/definitions/LoginResponse"
+  /validate-account-pin:
+    post:
+      tags:
+        - "Auth"
+      summary: "check valid account PIN"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "account user pin"
+        schema:
+          $ref: "#/definitions/PinRequest"
+      responses:
+        "200":
+          description: "Ok"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/PinResponse"
+            example:
+              status: "success"
+              message: "success valid pin"
+              data: 
+                pin: 123456
+                status: 1
+                status_text: "valid"
+      security:
+      - BearerAuth: []
+  /transactions/latest-transactions:
+    get:
+      tags:
+      - "Transaction"
+      summary: "show transaction history user order by latest"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "query"
+        type: string
+        description: "search bankaccount.name of transaction to"
+      responses:
+        "200":
+          description: "Ok"
+          schema:
+            type: "object"
+            $ref: "#/definitions/TransactionResponse"
+      security:
+      - BearerAuth: []
+  /transactions/create-transfer-bank:
+    post:
+      tags:
+      - "Transaction"
+      summary: "Create bank transaction"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Transaction object that needs to be transfer"
+        schema:
+          $ref: "#/definitions/CreateTransactionRequest"
+      responses:
+        "200":
+          description: Ok
+          schema:
+            $ref: "#/definitions/CreateTransactionResponse"
+      security:
+      - BearerAuth: []
+  /transactions/{transactionId}:
+    get:
+      tags:
+      - "Transaction"
+      summary: "show transaction detail and status"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "transactionId"
+        description: "ID of transaction"
+        required: true
+        type: "string"
+        format: "uuid"
+      responses:
+        "200":
+          description: "Ok"
+          schema:
+            type: "object"
+            $ref: "#/definitions/TransactionResponse"
+      security:
+      - BearerAuth: []
+  /transactions/account-balance:
+    get:
+      tags:
+        - "Transaction"
+      summary: "check user account balance"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Ok"
+          schema:
+            type: "object"
+            $ref: "#/definitions/BalanceResponse"
+      security:
+      - BearerAuth: []
+  /bank-account-favorites:
+    get:
+      tags:
+      - "Favorite"
+      summary: "show favorites bank account of user"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "query"
+        type: string
+        description: "search bankaccount.name of transaction to"
+      responses:
+        "200":
+          description: "Ok"
+          schema:
+            type: "object"
+            $ref: "#/definitions/FavoriteResponse"
+      security:
+      - BearerAuth: []
+    post:
+      tags:
+      - "Favorite"
+      summary: "add favorites bank account "
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        schema:
+          $ref: "#/definitions/FavoriteRequest"
+      responses:
+        "200":
+          description: "Ok"
+          schema:
+            type: "object"
+            $ref: "#/definitions/ApiResponse"
+      security:
+      - BearerAuth: []
+  /bank-account-favorites/{bankAccountId}:
+    delete:
+      tags:
+      - "Favorite"
+      summary: "remote favorites bank account "
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "bankAccountId"
+        description: "ID of bankAccount to delete"
+        required: true
+        type: "string"
+        format: "uuid"
+      responses:
+        "204":
+          description: "No Content"
+      security:
+      - BearerAuth: []
+  /banks:
+    get:
+      tags:
+      - "Bank"
+      summary: "list of bank"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "query"
+        type: string
+        description: "search bank name"
+      responses:
+        "200":
+          description: "Ok"
+          schema:
+            type: "object"
+            $ref: "#/definitions/BankResponse"
+      security:
+      - BearerAuth: []
+  /banks/check-account-number:
+    post:
+      tags:
+      - "Bank"
+      summary: "check valid account number"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "account number and bank id"
+        schema:
+          $ref: "#/definitions/CheckAccountBankRequest"
+      responses:
+        "200":
+          description: "Ok"
+          schema:
+            type: "object"
+            $ref: "#/definitions/CheckAccountBankResponse"
+        "404":
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+      security:
+      - BearerAuth: []
+securityDefinitions:
+  BearerAuth:
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+definitions:
+  PinRequest:
+    type: "object"
+    required:
+    - "pin"
+    properties:
+      pin:
+        type: "integer"
+        description: "pin of user"
+  PinResponse:
+    type: "object"
+    properties:
+      status:
+        type: "string"
+        description: "transaction status os request"
+      message:
+        type: "string"
+        description: "message of request"
+      data:
+        type: "object"
+        properties:
+          pin: 
+            type: "integer"
+          status:
+            type: "integer"
+          status_text:
+            type: "string"
+  LoginRequest:
+    type: "object"
+    required:
+    - "email"
+    - "password"
+    properties:
+      email:
+        type: "string"
+        description: "email of user"
+      password:
+        type: "string"
+        description: "password of user"
+  RegisterRequest:
+    type: "object"
+    required:
+    - "name"
+    - "email"
+    - "pin"
+    - "password"
+    properties:
+      name: 
+        type: "string"
+        description: "name of user"
+      email:
+        type: "string"
+        description: "email of user"
+      password:
+        type: "string"
+        description: "password of user"
+      pin:
+        type: "integer"
+        description: "pin of user"
+  LoginResponse:
+    type: "object"
+    properties:
+      status:
+        type: "string"
+        description: "status of request"
+      message:
+        type: "string"
+        description: "message of request"
+      data:
+        type: "object"
+        $ref: "#/definitions/LoginResponseData"
+  LoginResponseData:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "name of user"
+      email:
+        type: "string"
+        description: "email of user"
+      accountNumber:
+        type: "integer"
+        description: "bank account number of user"
+      accessToken:
+        type: "string"
+        description: "auth token for user"
+      refreshToken:
+        type: "string"
+        description: "refresh token to update token if access token is expired"
+  TransactionResponse:
+    type: "object"
+    properties:
+      status:
+        type: "string"
+        description: "status of request"
+      message:
+        type: "string"
+        description: "message"
+      data:
+        type: "array"
+        description: "item of transaction"
+        items:
+          $ref: "#/definitions/ItemTransaction"
+  ItemTransaction:
+    type: "object"
+    properties:
+      bank_transaction_id:
+        type: "string"
+        format: "uuid"
+      created_at:
+        type: "string"
+        format: "date-time"
+      created_by:
+        type: "string"
+        description: "creator of transaction"
+        format: "uuid"
+      updated_at:
+        type: "string"
+        format: "date-time"
+      updated_by:
+        type: "string"
+        description: "updater of transaction"
+        format: "uuid"
+      deleted_at:
+        type: "string"
+        format: "date-time"
+      deleted_by:
+        type: "string"
+        description: "deleted by transaction"
+        format: "uuid"
+      status:
+        type: "integer"
+        description: "status of transaction"
+      status_text:
+        type: "string"
+        description: "name of status"
+      mod_count:
+        type: "integer"
+        description: "counter of data changes"
+      debit:
+        type: "integer"
+        description: "debet of transaction"
+      credit:
+        type: "integer"
+        description: "credit of transaction"
+      transaction_fee:
+        type: "integer"
+        description: "amount of fee from this transaction"
+      bank_account_id:
+        type: string
+        format: uuid
+      bank_account:
+        type: "object"
+        $ref: "#/definitions/BankAccount"
+  FavoriteRequest:
+    type: "object"
+    properties:
+      bank_id:
+        type: "string"
+        format: "uuid"
+      name:
+        type: "string"
+        description: "name of bank"
+      accountNumber:
+        type: "integer"
+        description: "account number bank"
+  FavoriteResponse:
+    type: "object"
+    properties:
+      status:
+        type: "string"
+        description: "status of request"
+      message:
+        type: "string"
+        description: "message"
+      data:
+        type: "array"
+        items:
+          $ref: "#/definitions/BankAccountFavorite"
+  BankAccountFavorite:
+    type: "object"
+    properties:
+      bank_account_id:
+        type: "string"
+        format: "uuid"
+      user_id:
+        type: "string"
+        format: "uuid"
+      name:
+        type: "string"
+        description: "name of bank owner account"
+      accountNumber:
+        type: "integer"
+        description: "account number bank"
+      created_at:
+        type: "string"
+        format: "date-time"
+      created_by:
+        type: "string"
+        description: "creator of transaction"
+        format: "uuid"
+      updated_at:
+        type: "string"
+        format: "date-time"
+      updated_by:
+        type: "string"
+        description: "updater of transaction"
+        format: "uuid"
+      deleted_at:
+        type: "string"
+        format: "date-time"
+      deleted_by:
+        type: "string"
+        description: "deleted by transaction"
+        format: "uuid"
+      mod_count:
+        type: "integer"
+        description: "counter of data changes"
+      bank_id:
+        type: "string"
+        format: "uuid"
+      bank:
+        type: "object"
+        $ref: "#/definitions/Bank"
+  BankAccount:
+    type: "object"
+    properties:
+      bank_account_id:
+        type: "string"
+        format: "uuid"
+      name:
+        type: "string"
+        description: "name of bank owner account"
+      accountNumber:
+        type: "integer"
+        description: "account number bank"
+      bank_id:
+        type: "string"
+        format: "uuid"
+      bank:
+        type: "object"
+        $ref: "#/definitions/Bank"
+  CheckAccountBankRequest:
+    type: "object"
+    required:
+    - "bank_id"
+    - "account_number"
+    properties:
+      bank_id:
+        type: "string"
+        format: "uuid"
+      account_number:
+        type: "integer"
+        description: "account number"
+  CheckAccountBankResponse:
+    properties:
+      status:
+        type: "string"
+        description: "status of request"
+      message:
+        type: "string"
+        description: "message"
+      data:
+        type: "object"
+        properties:
+          bank_id:
+            type: "string"
+            format: "uuid"
+          account_number:
+            type: "integer"
+            description: "account number"
+          name:
+            type: "string"
+            description: "name of owner bank"
+          bank:
+            type: "object"
+            $ref: "#/definitions/Bank"
+  CreateTransactionRequest:
+    required:
+    - "bank_id"
+    - "account_number"
+    - "amount"
+    - "transaction_fee"
+    properties:
+      bank_id:
+        type: "string"
+        format: "uuid"
+      account_number:
+        type: "integer"
+        description: "account number"
+      amount:
+        type: "integer"
+        description: "amount of transaction to transfer"
+      transaction_fee:
+        type: "integer"
+        description: "amount of transaction free to credit"
+  CreateTransactionResponse:
+    properties:
+      status:
+        type: "string"
+        description: "status of request"
+      message:
+        type: "string"
+        description: "message"
+      data:
+        type: "object"
+        $ref: "#/definitions/ItemTransaction"
+  BankResponse:
+    type: "object"
+    properties:
+      status:
+        type: "string"
+        description: "status of request"
+      message:
+        type: "string"
+        description: "message"
+      data:
+        type: "array"
+        items:
+          $ref: "#/definitions/Bank"
+  Bank:
+    type: "object"
+    properties:
+      bank_id:
+        type: "string"
+        format: "uuid"
+      name:
+        type: "string"
+        description: "name of bank"
+      short_name:
+        type: "string"
+        description: "short name of bank"
+      logo: 
+        type: "string"
+        description: "url to logo file"
+      code:
+        type: "integer"
+        description: "code of bank"
+      transaction_fee:
+        type: "integer"
+        description: "amount of fee use to transaction to this bank"
+      created_at:
+        type: "string"
+        format: "date-time"
+      created_by:
+        type: "string"
+        description: "creator of transaction"
+        format: "uuid"
+      updated_at:
+        type: "string"
+        format: "date-time"
+      updated_by:
+        type: "string"
+        description: "updater of transaction"
+        format: "uuid"
+      deleted_at:
+        type: "string"
+        format: "date-time"
+      deleted_by:
+        type: "string"
+        description: "deleted by transaction"
+        format: "uuid"
+      mod_count:
+        type: "integer"
+        description: "counter of data changes"
+  BalanceResponse:
+    type: "object"
+    properties:
+      status:
+        type: "string"
+        description: "status of request"
+      message:
+        type: "string"
+        description: "message of request"
+      data:
+        type: "object"
+        properties:
+          accountNumber:
+            type: "integer"
+          balance:
+            type: integer
+  ApiResponse:
+    type: "object"
+    properties:
+      status:
+        type: "string"
+        description: "status of request"
+      message:
+        type: "string"
+        description: "message of request"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"

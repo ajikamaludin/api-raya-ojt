@@ -11,6 +11,7 @@ func Routes(app *fiber.App) {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 				"status":  constants.STATUS_FAIL,
 				"message": "Not Found",
+				"error":   "",
 			})
 		},
 	)

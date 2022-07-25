@@ -5,6 +5,8 @@ import (
 	"sync"
 
 	"github.com/ajikamaludin/api-raya-ojt/app/configs"
+	"github.com/ajikamaludin/api-raya-ojt/app/models"
+
 	// "github.com/ajikamaludin/api-raya-ojt/app/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -25,12 +27,13 @@ func (gdb *GormDB) GetInstance() (*gorm.DB, error) {
 		configs := configs.GetInstance()
 
 		dsn := fmt.Sprintf(
-			"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Jakarta",
+			"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=%s",
 			configs.Dbconfig.Host,
 			configs.Dbconfig.Username,
 			configs.Dbconfig.Password,
 			configs.Dbconfig.Dbname,
 			configs.Dbconfig.Port,
+			configs.Dbconfig.DbTimeZone,
 		)
 		lock.Lock()
 		var err error
@@ -42,10 +45,26 @@ func (gdb *GormDB) GetInstance() (*gorm.DB, error) {
 
 		if configs.Dbconfig.DbIsMigrate {
 			// Migrate Here
-			// db.AutoMigrate(&models.Note{})
+			gdb.db.AutoMigrate(
+				&models.User{},
+				&models.Account{},
+				&models.Bank{},
+				// &models.BankAccount{},
+				// &models.BankAccountFavorite{},
+				// &models.BankTransaction{},
+			)
+			// Seed Here
+			user := &models.User{
+				Name:     "User Biasa",
+				Email:    "user@gmail.com",
+				Password: "password", // need to crypt
+				Pin:      "123456",   // need to crypt
+				ModCount: 0,
+			}
+			gdb.db.Create(&user)
 		}
 		return gdb.db, nil
 	}
-	fmt.Println("[DATABASE] : ", gdb.db)
+	// fmt.Println("[DATABASE] : ", gdb.db)
 	return gdb.db, nil
 }

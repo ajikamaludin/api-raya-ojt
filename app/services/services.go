@@ -24,6 +24,7 @@ func New() *Services {
 	gormdb := gormdb.New()
 	redisclient := redisclient.New()
 	jwtmanager := jwtmanager.New()
+	repository := repository.New(gormdb, redisclient)
 
 	return &Services{
 		Configs:     configs,
@@ -31,5 +32,6 @@ func New() *Services {
 		RedisClient: redisclient,
 		Validator:   validator,
 		JwtManager:  jwtmanager,
+		Repository:  repository,
 	}
 }
