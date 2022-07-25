@@ -3,7 +3,6 @@ module github.com/ajikamaludin/api-raya-ojt
 go 1.18
 
 require (
-	github.com/ajikamaludin/go-fiber-rest v0.0.0-20220723032215-a4c6fd1ad539
 	github.com/go-playground/validator/v10 v10.11.0
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/gofiber/fiber/v2 v2.35.0

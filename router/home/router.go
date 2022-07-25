@@ -1,7 +1,7 @@
 package home
 
 import (
-	homeController "github.com/ajikamaludin/go-fiber-rest/app/controllers/home"
+	homeController "github.com/ajikamaludin/api-raya-ojt/app/controllers/home"
 	"github.com/gofiber/fiber/v2"
 )
 

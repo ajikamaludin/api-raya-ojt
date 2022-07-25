@@ -3,8 +3,8 @@ package jwtmanager
 import (
 	"time"
 
-	"github.com/ajikamaludin/go-fiber-rest/app/configs"
-	"github.com/ajikamaludin/go-fiber-rest/app/models"
+	"github.com/ajikamaludin/api-raya-ojt/app/configs"
+	"github.com/ajikamaludin/api-raya-ojt/app/models"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 

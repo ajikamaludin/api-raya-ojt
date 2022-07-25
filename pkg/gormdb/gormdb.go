@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/ajikamaludin/go-fiber-rest/app/configs"
-	// "github.com/ajikamaludin/go-fiber-rest/app/models"
+	"github.com/ajikamaludin/api-raya-ojt/app/configs"
+	// "github.com/ajikamaludin/api-raya-ojt/app/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

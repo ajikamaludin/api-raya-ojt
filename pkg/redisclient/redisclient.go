@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ajikamaludin/go-fiber-rest/app/configs"
+	"github.com/ajikamaludin/api-raya-ojt/app/configs"
 	"github.com/go-redis/redis/v8"
 )
 
