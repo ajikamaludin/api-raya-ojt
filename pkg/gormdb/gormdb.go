@@ -6,6 +6,7 @@ import (
 
 	"github.com/ajikamaludin/api-raya-ojt/app/configs"
 	"github.com/ajikamaludin/api-raya-ojt/app/models"
+	"github.com/ajikamaludin/api-raya-ojt/pkg/utils/helper"
 
 	// "github.com/ajikamaludin/api-raya-ojt/app/models"
 	"gorm.io/driver/postgres"
@@ -53,15 +54,7 @@ func (gdb *GormDB) GetInstance() (*gorm.DB, error) {
 				// &models.BankAccountFavorite{},
 				// &models.BankTransaction{},
 			)
-			// Seed Here
-			user := &models.User{
-				Name:     "User Biasa",
-				Email:    "user@gmail.com",
-				Password: "password", // need to crypt
-				Pin:      "123456",   // need to crypt
-				ModCount: 0,
-			}
-			gdb.db.Create(&user)
+			helper.Seed(gdb.db)
 		}
 		return gdb.db, nil
 	}

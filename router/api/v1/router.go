@@ -11,8 +11,12 @@ import (
 func ApiRoutes(app *fiber.App) {
 	route := app.Group("/api/v1")
 
+	services := services.New()
 	authController := &controllers.AuthController{
-		Service: services.New(),
+		Service: services,
+	}
+	bankController := &controllers.BankController{
+		Service: services,
 	}
 
 	route.Post("/register", authController.Register)
@@ -24,4 +28,5 @@ func ApiRoutes(app *fiber.App) {
 	}))
 
 	routeAuth.Post("/validate-account-pin", authController.ValidatePin)
+	routeAuth.Get("/banks", bankController.GetAllBanks)
 }

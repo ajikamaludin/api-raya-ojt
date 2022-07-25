@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"github.com/ajikamaludin/api-raya-ojt/app/configs"
-	exception "github.com/ajikamaludin/api-raya-ojt/router"
+	"github.com/ajikamaludin/api-raya-ojt/router"
 	apiv1 "github.com/ajikamaludin/api-raya-ojt/router/api/v1"
 	home "github.com/ajikamaludin/api-raya-ojt/router/home"
 	"github.com/gofiber/fiber/v2"
@@ -29,7 +29,7 @@ func main() {
 	// api route : api/v1
 	apiv1.ApiRoutes(app)
 	// handle 404
-	exception.Routes(app)
+	router.Routes(app)
 
 	config := configs.GetInstance()
 	listen := fmt.Sprintf(":%v", config.Appconfig.Port)
