@@ -11,10 +11,17 @@ import (
 )
 
 var lock = &sync.Mutex{}
-var db *gorm.DB
 
-func GetInstance() (*gorm.DB, error) {
-	if db == nil {
+type GormDB struct {
+	db *gorm.DB
+}
+
+func New() *GormDB {
+	return &GormDB{}
+}
+
+func (gdb *GormDB) GetInstance() (*gorm.DB, error) {
+	if gdb.db == nil {
 		configs := configs.GetInstance()
 
 		dsn := fmt.Sprintf(
@@ -27,7 +34,7 @@ func GetInstance() (*gorm.DB, error) {
 		)
 		lock.Lock()
 		var err error
-		db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+		gdb.db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 		lock.Unlock()
 		if err != nil {
 			return nil, err
@@ -37,8 +44,8 @@ func GetInstance() (*gorm.DB, error) {
 			// Migrate Here
 			// db.AutoMigrate(&models.Note{})
 		}
-		return db, nil
+		return gdb.db, nil
 	}
-	// fmt.Println("[DATABASE] : ", db)
-	return db, nil
+	fmt.Println("[DATABASE] : ", gdb.db)
+	return gdb.db, nil
 }

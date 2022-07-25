@@ -11,7 +11,13 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-func CreateToken(user *models.User) string {
+func New() *JwtManager {
+	return &JwtManager{}
+}
+
+type JwtManager struct{}
+
+func (jwtManager *JwtManager) CreateToken(user *models.User) string {
 	configs := configs.GetInstance()
 
 	claims := jwt.MapClaims{
@@ -26,7 +32,7 @@ func CreateToken(user *models.User) string {
 	return token
 }
 
-func GetUserId(c *fiber.Ctx) (UserId uuid.UUID) {
+func (jwtManager *JwtManager) GetUserId(c *fiber.Ctx) (UserId uuid.UUID) {
 	user := c.Locals("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 	UserId, _ = uuid.Parse(claims["user_id"].(string))

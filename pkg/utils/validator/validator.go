@@ -2,15 +2,21 @@ package validator
 
 import "github.com/go-playground/validator/v10"
 
+type Validator struct {
+}
+
+func New() *Validator {
+	return &Validator{}
+}
+
 type ErrorResponse struct {
 	FailedField string
 	Tag         string
 	Value       string
 }
 
-var validate = validator.New()
-
-func ValidateRequest(model interface{}) []*ErrorResponse {
+func (v *Validator) ValidateRequest(model interface{}) []*ErrorResponse {
+	var validate = validator.New()
 	var errors []*ErrorResponse
 	err := validate.Struct(model)
 	if err != nil {
