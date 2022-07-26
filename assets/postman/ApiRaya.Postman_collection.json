@@ -1,0 +1,1690 @@
+{
+	"info": {
+		"_postman_id": "0258a342-d3fd-4f13-afbb-135b7dec46c8",
+		"name": "API Raya OJT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1829038"
+	},
+	"item": [
+		{
+			"name": "Test",
+			"item": [
+				{
+					"name": "Test",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('test status code', () => {",
+									"    pm.response.to.have.status(200)",
+									"});",
+									"",
+									"pm.test('test is ok!', () => {",
+									"    const responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson).to.haveOwnProperty('data');",
+									"    pm.expect(responseJson.status).to.equals('success');",
+									"    // pm.environment.set('status', responseJson.status);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}",
+							"host": [
+								"{{host}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('test status code', () => {",
+									"    pm.response.to.have.status(200)",
+									"});",
+									"",
+									"pm.test('test is ok!', () => {",
+									"    const responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson).to.haveOwnProperty('data');",
+									"    pm.expect(responseJson.status).to.equals('success');",
+									"    pm.environment.set('token', responseJson.data.accessToken);",
+									"    pm.environment.set('accountNumber', responseJson.data.user.AccountNumber)",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{$timestamp}}-{{name}}\",\n    \"email\": \"{{$timestamp}}-{{email}}\",\n    \"password\": \"{{password}}\",\n    \"pin\": \"{{pin}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_api_version}}/register",
+							"host": [
+								"{{host_api_version}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Aji Kamaludin\",\n    \"email\": \"ajikamaludin@gmail.com\",\n    \"password\": \"password123.\",\n    \"pin\": \"123123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"register"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Mon, 25 Jul 2022 06:18:21 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "444"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTg3MzM1MDIsInVzZXJfaWQiOiI5YWI3OTljMi0xYmViLTRhZjUtYjA2ZC1hODEyMmZmNDI0NzMifQ.9Lk1oFC3vQdgQsQ-cJzcqeovcDmZSSgbamUupQpOnNs\",\n        \"refreshToken\": \"\",\n        \"user\": {\n            \"ID\": \"9ab799c2-1beb-4af5-b06d-a8122ff42473\",\n            \"AccountNumber\": \"0009659819414\",\n            \"Balance\": 0,\n            \"Email\": \"ajikamaludin@gmail.com\",\n            \"CreatedAt\": \"2022-07-25T13:18:22.477905892+07:00\"\n        }\n    },\n    \"message\": \"Success Register\",\n    \"status\": \"success\"\n}"
+						},
+						{
+							"name": "Email Already Register",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"{{name}}\",\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\",\n    \"pin\": \"{{pin}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host_api_version}}/register",
+									"host": [
+										"{{host_api_version}}"
+									],
+									"path": [
+										"register"
+									]
+								}
+							},
+							"status": "Unprocessable Entity",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Mon, 25 Jul 2022 06:18:46 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "64"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"\",\n    \"message\": \"email is already exists\",\n    \"status\": \"fail\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('test status code', () => {",
+									"    pm.response.to.have.status(200)",
+									"});",
+									"",
+									"pm.test('test is ok!', () => {",
+									"    const responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson).to.haveOwnProperty('data');",
+									"    pm.expect(responseJson.status).to.equals('success');",
+									"    pm.environment.set('token', responseJson.data.accessToken);",
+									"    pm.environment.set('bankRayaAccountNumber', responseJson.data.user.AccountNumber)",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const registerDefaultUser = {",
+									"    url: `${pm.environment.get('host_api_version')}/register`,",
+									"    method: 'POST',",
+									"    header: {",
+									"        'Content-Type': 'application/json',",
+									"    },",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({",
+									"            \"name\": `${pm.environment.get('name')}`,",
+									"            \"email\": `${pm.environment.get('email')}`,",
+									"            \"password\": `${pm.environment.get('password')}`,",
+									"            \"pin\": `${pm.environment.get('pin')}`",
+									"        }),",
+									"    },",
+									"};",
+									" ",
+									"pm.sendRequest(registerDefaultUser, (error, response) => {",
+									"    console.log(error ? error : response);",
+									"    const result = response.json()",
+									"    console.log(result)",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_api_version}}/login",
+							"host": [
+								"{{host_api_version}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host_api_version}}/login",
+									"host": [
+										"{{host_api_version}}"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Mon, 25 Jul 2022 06:19:12 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "438"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTg3MzM1NTMsInVzZXJfaWQiOiI5YWI3OTljMi0xYmViLTRhZjUtYjA2ZC1hODEyMmZmNDI0NzMifQ.UbmOVcFSv6bIpeTgpuzPsIvtumwItge5IcgmB4BCMM4\",\n        \"refreshToken\": \"\",\n        \"user\": {\n            \"ID\": \"9ab799c2-1beb-4af5-b06d-a8122ff42473\",\n            \"AccountNumber\": \"0009659819414\",\n            \"Balance\": 0,\n            \"Email\": \"ajikamaludin@gmail.com\",\n            \"CreatedAt\": \"2022-07-25T13:18:22.477905+07:00\"\n        }\n    },\n    \"message\": \"Success login\",\n    \"status\": \"success\"\n}"
+						},
+						{
+							"name": "Wrong Credential",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"1{{email}}\",\n    \"password\": \"{{password}}1\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host_api_version}}/login",
+									"host": [
+										"{{host_api_version}}"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Mon, 25 Jul 2022 06:20:40 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "123"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"crypto/bcrypt: hashedSecret too short to be a bcrypted password\",\n    \"message\": \"credentials invalid\",\n    \"status\": \"fail\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Validate Account PIN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('test status code', () => {",
+									"    pm.response.to.have.status(200)",
+									"});",
+									"",
+									"pm.test('test is ok!', () => {",
+									"    const responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson).to.haveOwnProperty('data');",
+									"    pm.expect(responseJson.status).to.equals('success');",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"pin\": \"{{pin}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_api_version}}/validate-account-pin",
+							"host": [
+								"{{host_api_version}}"
+							],
+							"path": [
+								"validate-account-pin"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"pin\": \"{{pin}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host_api_version}}/validate-account-pin",
+									"host": [
+										"{{host_api_version}}"
+									],
+									"path": [
+										"validate-account-pin"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Mon, 25 Jul 2022 06:24:29 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "84"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"status\": 1,\n        \"status_text\": \"valid\"\n    },\n    \"message\": \"pin valid\",\n    \"status\": \"success\"\n}"
+						},
+						{
+							"name": "Fail",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"pin\": \"{{pin}}1\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host_api_version}}/validate-account-pin",
+									"host": [
+										"{{host_api_version}}"
+									],
+									"path": [
+										"validate-account-pin"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Mon, 25 Jul 2022 06:24:43 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "85"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"status\": 2,\n        \"status_text\": \"invalid\"\n    },\n    \"message\": \"pin invalid\",\n    \"status\": \"fail\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Bank",
+			"item": [
+				{
+					"name": "List Bank",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('test status code', () => {",
+									"    pm.response.to.have.status(200)",
+									"});",
+									"",
+									"pm.test('test is ok!', () => {",
+									"    const responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson).to.haveOwnProperty('data');",
+									"    pm.expect(responseJson.status).to.equals('success');",
+									"    responseJson.data.map(item => {",
+									"        if (item.ShortName == \"RAYA\") {",
+									"            pm.environment.set(\"bankRayaId\", item.ID)",
+									"        }",
+									"        if (item.ShortName == \"MDR\") {",
+									"            pm.environment.set(\"bankMandiriId\", item.ID)",
+									"            pm.environment.set(\"bankMandiriAccountNumber\", \"130130008653451954\")",
+									"        }",
+									"    })",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_api_version}}/banks?query=",
+							"host": [
+								"{{host_api_version}}"
+							],
+							"path": [
+								"banks"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host_api_version}}/banks",
+									"host": [
+										"{{host_api_version}}"
+									],
+									"path": [
+										"banks"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Mon, 25 Jul 2022 07:08:48 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "2720"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"ID\": \"f2fbc713-9a9b-467c-be74-8ddc9139b328\",\n            \"Name\": \"Mandiri\",\n            \"ShortName\": \"MDR\",\n            \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n            \"Code\": \"008\",\n            \"TransactionFee\": 2500\n        },\n        {\n            \"ID\": \"00ced38e-1c7b-40bf-9508-d85c0c6dcfa7\",\n            \"Name\": \"Bank Rakyat Indonesia\",\n            \"ShortName\": \"BRI\",\n            \"LogoUrl\": \"https://bankraya.co.id/img/logo.png\",\n            \"Code\": \"002\",\n            \"TransactionFee\": 2500\n        },\n        {\n            \"ID\": \"36ec4977-8b88-4585-833a-2d9f95249cf5\",\n            \"Name\": \"Bank Tabungan Pensiunan Nasional - Jenius\",\n            \"ShortName\": \"BTPN\",\n            \"LogoUrl\": \"https://www.btpn.com/website/static/img/logo.png\",\n            \"Code\": \"213\",\n            \"TransactionFee\": 2500\n        },\n        {\n            \"ID\": \"fe23a7fc-d1e2-4855-b472-7d2f87a9d2c4\",\n            \"Name\": \"Bank Central Asia\",\n            \"ShortName\": \"BCA\",\n            \"LogoUrl\": \"https://bankraya.co.id/img/logo.png\",\n            \"Code\": \"014\",\n            \"TransactionFee\": 2500\n        },\n        {\n            \"ID\": \"4b2b5ca7-f71e-4ab5-9ff4-1873bfd679be\",\n            \"Name\": \"Bank Negara Indonesia\",\n            \"ShortName\": \"BNI\",\n            \"LogoUrl\": \"https://bankraya.co.id/img/logo.png\",\n            \"Code\": \"009\",\n            \"TransactionFee\": 2500\n        },\n        {\n            \"ID\": \"95eda3a5-84a1-4ece-a5e6-892cd05cb845\",\n            \"Name\": \"Bank CIMB Niaga\",\n            \"ShortName\": \"CIMB\",\n            \"LogoUrl\": \"https://bankraya.co.id/img/logo.png\",\n            \"Code\": \"022\",\n            \"TransactionFee\": 2500\n        },\n        {\n            \"ID\": \"fea54b7a-85c5-4d67-bc42-8914f1e6edac\",\n            \"Name\": \"Bank Muamalat\",\n            \"ShortName\": \"Muamalat\",\n            \"LogoUrl\": \"https://bankraya.co.id/img/logo.png\",\n            \"Code\": \"147\",\n            \"TransactionFee\": 2500\n        },\n        {\n            \"ID\": \"2282f1ce-9401-4f60-b03d-4aa683fa2dfe\",\n            \"Name\": \"Permata Bank\",\n            \"ShortName\": \"Permata\",\n            \"LogoUrl\": \"https://bankraya.co.id/img/logo.png\",\n            \"Code\": \"013\",\n            \"TransactionFee\": 2500\n        },\n        {\n            \"ID\": \"66d6ee65-4509-407f-b896-c87fd4b38a3d\",\n            \"Name\": \"Bank Danamon\",\n            \"ShortName\": \"Danamon\",\n            \"LogoUrl\": \"https://bankraya.co.id/img/logo.png\",\n            \"Code\": \"011\",\n            \"TransactionFee\": 2500\n        },\n        {\n            \"ID\": \"25cb7484-6f35-4e3e-a7cd-eff0b19c913c\",\n            \"Name\": \"Bank Mega\",\n            \"ShortName\": \"Mega\",\n            \"LogoUrl\": \"https://bankraya.co.id/img/logo.png\",\n            \"Code\": \"426\",\n            \"TransactionFee\": 2500\n        },\n        {\n            \"ID\": \"5452ad12-f366-4ad1-bb5b-09edd153ca5b\",\n            \"Name\": \"Bank Sinarmas\",\n            \"ShortName\": \"Sinarmas\",\n            \"LogoUrl\": \"https://bankraya.co.id/img/logo.png\",\n            \"Code\": \"153\",\n            \"TransactionFee\": 2500\n        },\n        {\n            \"ID\": \"826e81a9-677f-439e-9030-3402eda23062\",\n            \"Name\": \"Bank OCBC NISP\",\n            \"ShortName\": \"OCBC\",\n            \"LogoUrl\": \"https://bankraya.co.id/img/logo.png\",\n            \"Code\": \"028\",\n            \"TransactionFee\": 2500\n        },\n        {\n            \"ID\": \"7e1a9495-340a-4f3c-baea-edd219ca9f2c\",\n            \"Name\": \"Bank Bukopin\",\n            \"ShortName\": \"BBUK\",\n            \"LogoUrl\": \"https://bankraya.co.id/img/logo.png\",\n            \"Code\": \"441\",\n            \"TransactionFee\": 2500\n        },\n        {\n            \"ID\": \"749db6c3-f000-4890-ba07-298dec8c749f\",\n            \"Name\": \"Citibank\",\n            \"ShortName\": \"CITI\",\n            \"LogoUrl\": \"https://bankraya.co.id/img/logo.png\",\n            \"Code\": \"031\",\n            \"TransactionFee\": 2500\n        },\n        {\n            \"ID\": \"7842b2e5-fede-44d6-abc9-8744654db58b\",\n            \"Name\": \"Bank Jateng\",\n            \"ShortName\": \"BJT\",\n            \"LogoUrl\": \"https://bankraya.co.id/img/logo.png\",\n            \"Code\": \"113\",\n            \"TransactionFee\": 2500\n        }\n    ],\n    \"message\": \"get list banks\",\n    \"status\": \"success\"\n}"
+						},
+						{
+							"name": "Success: search",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host_api_version}}/banks?query=ra",
+									"host": [
+										"{{host_api_version}}"
+									],
+									"path": [
+										"banks"
+									],
+									"query": [
+										{
+											"key": "query",
+											"value": "ra"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Mon, 25 Jul 2022 07:28:52 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "764"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"ID\": \"60d19ae0-8215-4716-8d07-4ec79da10ed8\",\n            \"Name\": \"Bank Rakyat Indonesia\",\n            \"ShortName\": \"BRI\",\n            \"LogoUrl\": \"https://bankraya.co.id/img/logo.png\",\n            \"Code\": \"002\",\n            \"TransactionFee\": 2500\n        },\n        {\n            \"ID\": \"9457c657-7913-440e-933e-05f5fcb1154e\",\n            \"Name\": \"Bank Rakya Indonesia\",\n            \"ShortName\": \"Raya\",\n            \"LogoUrl\": \"https://bankraya.co.id/img/logo.png\",\n            \"Code\": \"002\",\n            \"TransactionFee\": 2500\n        },\n        {\n            \"ID\": \"43eff054-b0c9-44ec-9c39-f718ce3b4415\",\n            \"Name\": \"Bank Central Asia\",\n            \"ShortName\": \"BCA\",\n            \"LogoUrl\": \"https://bankraya.co.id/img/logo.png\",\n            \"Code\": \"014\",\n            \"TransactionFee\": 2500\n        },\n        {\n            \"ID\": \"c7698825-bb22-4b5e-bfd1-2e89307f2700\",\n            \"Name\": \"Bank Negara Indonesia\",\n            \"ShortName\": \"BNI\",\n            \"LogoUrl\": \"https://bankraya.co.id/img/logo.png\",\n            \"Code\": \"009\",\n            \"TransactionFee\": 2500\n        }\n    ],\n    \"message\": \"get list banks\",\n    \"status\": \"success\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Check Account Number",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('test status code', () => {",
+									"    pm.response.to.have.status(200)",
+									"});",
+									"",
+									"pm.test('test is ok!', () => {",
+									"    const responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson).to.haveOwnProperty('data');",
+									"    pm.expect(responseJson.status).to.equals('success');",
+									"    pm.environment.set(\"bankMandiriName\", responseJson.data.Name)",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"BankId\": \"{{bankMandiriId}}\",\n    \"AccountNumber\": \"{{bankMandiriAccountNumber}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_api_version}}/banks/check-account-number",
+							"host": [
+								"{{host_api_version}}"
+							],
+							"path": [
+								"banks",
+								"check-account-number"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success: internal",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"BankId\": \"{{bankId}}\",\n    \"AccountNumber\": \"{{accountNumber}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host_api_version}}/check-account-number",
+									"host": [
+										"{{host_api_version}}"
+									],
+									"path": [
+										"check-account-number"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 26 Jul 2022 01:51:24 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "351"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"BankId\": \"e47ce28c-06da-4dba-993b-64e776e3fbcc\",\n        \"AccountNumber\": \"0008653451954\",\n        \"Name\": \"Aji Kamaludin\",\n        \"Bank\": {\n            \"ID\": \"e47ce28c-06da-4dba-993b-64e776e3fbcc\",\n            \"Name\": \"Bank Raya Indonesia\",\n            \"ShortName\": \"RAYA\",\n            \"LogoUrl\": \"https://bankraya.co.id/img/logo.png\",\n            \"Code\": \"002\",\n            \"TransactionFee\": 0\n        }\n    },\n    \"message\": \"account bank number found\",\n    \"status\": \"success\"\n}"
+						},
+						{
+							"name": "Success: External",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"BankId\": \"2a7f18cc-0d9c-4f1b-9c9f-0533703a4c8c\",\n    \"AccountNumber\": \"130130008653451954\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host_api_version}}/check-account-number",
+									"host": [
+										"{{host_api_version}}"
+									],
+									"path": [
+										"check-account-number"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 26 Jul 2022 01:53:34 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "391"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"BankId\": \"2a7f18cc-0d9c-4f1b-9c9f-0533703a4c8c\",\n        \"AccountNumber\": \"130130008653451954\",\n        \"Name\": \"Budi Mandiri\",\n        \"Bank\": {\n            \"ID\": \"2a7f18cc-0d9c-4f1b-9c9f-0533703a4c8c\",\n            \"Name\": \"Mandiri\",\n            \"ShortName\": \"MDR\",\n            \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n            \"Code\": \"008\",\n            \"TransactionFee\": 2500\n        }\n    },\n    \"message\": \"account bank number found\",\n    \"status\": \"success\"\n}"
+						},
+						{
+							"name": "Fail: External Not Found",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"BankId\": \"{{bankMandiriId}}\",\n    \"AccountNumber\": \"1301300086534519541\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host_api_version}}/check-account-number",
+									"host": [
+										"{{host_api_version}}"
+									],
+									"path": [
+										"check-account-number"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 26 Jul 2022 01:57:53 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "79"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"not found\",\n    \"message\": \"account bank number not found\",\n    \"status\": \"fail\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Favorite",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('test status code', () => {",
+									"    pm.response.to.have.status(200)",
+									"});",
+									"",
+									"pm.test('test is ok!', () => {",
+									"    const responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson).to.haveOwnProperty('data');",
+									"    pm.expect(responseJson.status).to.equals('success');",
+									"    pm.environment.set(\"accountFavoriteId\", responseJson.data.ID)",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"BankID\" : \"{{bankMandiriId}}\",\n    \"Name\" : \"Pak Budi (Sekre)\",\n    \"AccountNumber\": \"{{bankMandiriAccountNumber}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_api_version}}/bank-account-favorites",
+							"host": [
+								"{{host_api_version}}"
+							],
+							"path": [
+								"bank-account-favorites"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Has Been Favorite",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"BankID\" : \"{{bankMandiriId}}\",\n    \"Name\" : \"Pak Budi (Sekre)\",\n    \"AccountNumber\": \"{{bankMandiriAccountNumber}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host_api_version}}/bank-account-favorites",
+									"host": [
+										"{{host_api_version}}"
+									],
+									"path": [
+										"bank-account-favorites"
+									]
+								}
+							},
+							"status": "Unprocessable Entity",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 26 Jul 2022 04:02:44 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "59"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"account has been set favorite\",\n    \"status\": \"fail\"\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"BankID\" : \"{{bankMandiriId}}\",\n    \"Name\" : \"Pak Budi (Sekre)\",\n    \"AccountNumber\": \"{{bankMandiriAccountNumber}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host_api_version}}/bank-account-favorites",
+									"host": [
+										"{{host_api_version}}"
+									],
+									"path": [
+										"bank-account-favorites"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 26 Jul 2022 04:05:18 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "441"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"ID\": \"41933c5d-1a33-445e-90c6-0b3feeb53cd4\",\n        \"UserID\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n        \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n        \"Name\": \"Pak Budi (Sekre)\",\n        \"AccountNumber\": \"130130008653451954\",\n        \"Bankaccount\": {\n            \"ID\": \"be690b3a-9530-48b0-9583-bb729f814370\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"Name\": \"Budi Mandiri\",\n            \"AccountNumber\": \"130130008653451954\"\n        }\n    },\n    \"message\": \"create user favorite accounts\",\n    \"status\": \"success\"\n}"
+						}
+					]
+				},
+				{
+					"name": "List Favorite",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('test status code', () => {",
+									"    pm.response.to.have.status(200)",
+									"});",
+									"",
+									"pm.test('test is ok!', () => {",
+									"    const responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson).to.haveOwnProperty('data');",
+									"    pm.expect(responseJson.status).to.equals('success');",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_api_version}}/bank-account-favorites",
+							"host": [
+								"{{host_api_version}}"
+							],
+							"path": [
+								"bank-account-favorites"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "budi",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "With Query",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host_api_version}}/bank-account-favorites?query=budi",
+									"host": [
+										"{{host_api_version}}"
+									],
+									"path": [
+										"bank-account-favorites"
+									],
+									"query": [
+										{
+											"key": "query",
+											"value": "budi"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 26 Jul 2022 04:05:55 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "445"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"ID\": \"41933c5d-1a33-445e-90c6-0b3feeb53cd4\",\n            \"UserID\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"Name\": \"Pak Budi (Sekre)\",\n            \"AccountNumber\": \"130130008653451954\",\n            \"Bankaccount\": {\n                \"ID\": \"be690b3a-9530-48b0-9583-bb729f814370\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        }\n    ],\n    \"message\": \"get list user favorite accounts\",\n    \"status\": \"success\"\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host_api_version}}/bank-account-favorites",
+									"host": [
+										"{{host_api_version}}"
+									],
+									"path": [
+										"bank-account-favorites"
+									],
+									"query": [
+										{
+											"key": "query",
+											"value": "budi",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 26 Jul 2022 04:06:48 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "799"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"ID\": \"41933c5d-1a33-445e-90c6-0b3feeb53cd4\",\n            \"UserID\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"Name\": \"Pak Budi (Sekre)\",\n            \"AccountNumber\": \"130130008653451954\",\n            \"Bankaccount\": {\n                \"ID\": \"be690b3a-9530-48b0-9583-bb729f814370\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"bf08e29f-02d9-43c1-8e26-b4b0b10decf7\",\n            \"UserID\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"BankID\": \"e0e81299-0dfc-4420-a5d8-6739310f0c8c\",\n            \"Name\": \"Budiman\",\n            \"AccountNumber\": \"0005801814640\",\n            \"Bankaccount\": {\n                \"ID\": \"3798ad7e-0d90-4da3-9e78-b8ebde587183\",\n                \"BankID\": \"e0e81299-0dfc-4420-a5d8-6739310f0c8c\",\n                \"Name\": \"Aji Kamaludin\",\n                \"AccountNumber\": \"0005801814640\"\n            }\n        }\n    ],\n    \"message\": \"get list user favorite accounts\",\n    \"status\": \"success\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('test status code', () => {",
+									"    pm.response.to.have.status(204)",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host_api_version}}/bank-account-favorites/{{accountFavoriteId}}",
+							"host": [
+								"{{host_api_version}}"
+							],
+							"path": [
+								"bank-account-favorites",
+								"{{accountFavoriteId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host_api_version}}/bank-account-favorites/{{accountFavoriteId}}",
+									"host": [
+										"{{host_api_version}}"
+									],
+									"path": [
+										"bank-account-favorites",
+										"{{accountFavoriteId}}"
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 26 Jul 2022 04:14:42 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "Deleted",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host_api_version}}/bank-account-favorites/{{accountFavoriteId}}",
+									"host": [
+										"{{host_api_version}}"
+									],
+									"path": [
+										"bank-account-favorites",
+										"{{accountFavoriteId}}"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 26 Jul 2022 04:14:53 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "83"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"record not found\",\n    \"message\": \"favorite account not found\",\n    \"status\": \"fail\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Transaction",
+			"item": [
+				{
+					"name": "Get User Balance",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('test status code', () => {",
+									"    pm.response.to.have.status(200)",
+									"});",
+									"",
+									"pm.test('test is ok!', () => {",
+									"    const responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson).to.haveOwnProperty('data');",
+									"    pm.expect(responseJson.status).to.equals('success');",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_api_version}}/transactions/account-balance",
+							"host": [
+								"{{host_api_version}}"
+							],
+							"path": [
+								"transactions",
+								"account-balance"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host_api_version}}/transactions/account-balance",
+									"host": [
+										"{{host_api_version}}"
+									],
+									"path": [
+										"transactions",
+										"account-balance"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 26 Jul 2022 06:08:53 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "102"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"accountNumber\": \"0005801814640\",\n        \"balance\": 0\n    },\n    \"message\": \"get user balance\",\n    \"status\": \"success\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Create Transaction",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('test status code', () => {",
+									"    pm.response.to.have.status(200)",
+									"});",
+									"",
+									"pm.test('test is ok!', () => {",
+									"    const responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson).to.haveOwnProperty('data');",
+									"    pm.expect(responseJson.status).to.equals('success');",
+									"    pm.environment.set(\"transactionId\", responseJson.data.ID)",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"BankId\": \"{{bankMandiriId}}\",\n    \"AccountNumber\": \"{{bankMandiriAccountNumber}}\",\n    \"Amount\": 10099\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_api_version}}/transactions",
+							"host": [
+								"{{host_api_version}}"
+							],
+							"path": [
+								"transactions"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"BankId\": \"{{bankMandiriId}}\",\n    \"AccountNumber\": \"{{bankMandiriAccountNumber}}\",\n    \"Amount\": 10099\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host_api_version}}/transactions",
+									"host": [
+										"{{host_api_version}}"
+									],
+									"path": [
+										"transactions"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 26 Jul 2022 08:08:37 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "867"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"ID\": \"8bbe0ef1-8caa-43c4-a387-0d0ba3e507c3\",\n        \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n        \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n        \"Debit\": 0,\n        \"Credit\": 10099,\n        \"Status\": 0,\n        \"StatusText\": \"pending\",\n        \"TransactionFee\": 2500,\n        \"CreateAt\": \"2022-07-26T15:08:38.007222762+07:00\",\n        \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n        \"UpdatedAt\": \"2022-07-26T15:08:38.007222762+07:00\",\n        \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n        \"Bank\": {\n            \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"Name\": \"Mandiri\",\n            \"ShortName\": \"MDR\",\n            \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n            \"Code\": \"008\",\n            \"TransactionFee\": 2500\n        },\n        \"BankAccount\": {\n            \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"Name\": \"Budi Mandiri\",\n            \"AccountNumber\": \"130130008653451954\"\n        }\n    },\n    \"message\": \"transaction created\",\n    \"status\": \"success\"\n}"
+						},
+						{
+							"name": "Fail",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"BankId\": \"{{bankMandiriId}}\",\n    \"AccountNumber\": \"{{bankMandiriAccountNumber}}\",\n    \"Amount\": 10099999\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host_api_version}}/transactions",
+									"host": [
+										"{{host_api_version}}"
+									],
+									"path": [
+										"transactions"
+									]
+								}
+							},
+							"status": "Unprocessable Entity",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 26 Jul 2022 08:08:51 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "84"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"balance is not enough\",\n    \"message\": \"transaction is invalid\",\n    \"status\": \"fail\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Detail Transaction",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('test status code', () => {",
+									"    pm.response.to.have.status(200)",
+									"});",
+									"",
+									"pm.test('test is ok!', () => {",
+									"    const responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson).to.haveOwnProperty('data');",
+									"    pm.expect(responseJson.status).to.equals('success');",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_api_version}}/transactions/{{transactionId}}",
+							"host": [
+								"{{host_api_version}}"
+							],
+							"path": [
+								"transactions",
+								"{{transactionId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host_api_version}}/transactions/{{transactionId}}",
+									"host": [
+										"{{host_api_version}}"
+									],
+									"path": [
+										"transactions",
+										"{{transactionId}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 26 Jul 2022 08:08:20 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "864"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"ID\": \"a91d67e1-fb82-4179-9a5d-1aca6d3732fa\",\n        \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n        \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n        \"Debit\": 0,\n        \"Credit\": 10099,\n        \"Status\": 0,\n        \"StatusText\": \"pending\",\n        \"TransactionFee\": 2500,\n        \"CreateAt\": \"2022-07-26T15:07:05.904735+07:00\",\n        \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n        \"UpdatedAt\": \"2022-07-26T15:07:05.904735+07:00\",\n        \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n        \"Bank\": {\n            \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"Name\": \"Mandiri\",\n            \"ShortName\": \"MDR\",\n            \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n            \"Code\": \"008\",\n            \"TransactionFee\": 2500\n        },\n        \"BankAccount\": {\n            \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"Name\": \"Budi Mandiri\",\n            \"AccountNumber\": \"130130008653451954\"\n        }\n    },\n    \"message\": \"get transaction detail\",\n    \"status\": \"success\"\n}"
+						}
+					]
+				},
+				{
+					"name": "List Latest Transaction",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('test status code', () => {",
+									"    pm.response.to.have.status(200)",
+									"});",
+									"",
+									"pm.test('test is ok!', () => {",
+									"    const responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson).to.haveOwnProperty('data');",
+									"    pm.expect(responseJson.status).to.equals('success');",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host_api_version}}/transactions/latest-transactions?query",
+							"host": [
+								"{{host_api_version}}"
+							],
+							"path": [
+								"transactions",
+								"latest-transactions"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host_api_version}}/transactions/latest-transactions?query",
+									"host": [
+										"{{host_api_version}}"
+									],
+									"path": [
+										"transactions",
+										"latest-transactions"
+									],
+									"query": [
+										{
+											"key": "query",
+											"value": null
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 26 Jul 2022 08:09:05 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "24925"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"ID\": \"8bbe0ef1-8caa-43c4-a387-0d0ba3e507c3\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10099,\n            \"Status\": 0,\n            \"StatusText\": \"pending\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T15:08:38.007222+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T15:08:38.007222+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"a91d67e1-fb82-4179-9a5d-1aca6d3732fa\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10099,\n            \"Status\": 0,\n            \"StatusText\": \"pending\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T15:07:05.904735+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T15:07:05.904735+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"c64040bc-b1a0-4c50-8ec8-5d87e9dfd7a2\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 0,\n            \"StatusText\": \"pending\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:46:43.98144+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:46:43.98144+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"792ced51-09fb-4718-815f-7dc913cf0fd6\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 0,\n            \"StatusText\": \"pending\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:29:34.175977+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:29:34.175977+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"e3895271-1408-40fa-a83b-45688c477c51\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 0,\n            \"StatusText\": \"pending\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:27:58.432834+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:27:58.432834+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"44bdd8ba-10d8-41c2-beb4-88bb1a151d23\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 0,\n            \"StatusText\": \"pending\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:27:57.965584+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:27:57.965584+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"4f309997-93d6-4a9f-9782-20b1573d9455\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 0,\n            \"StatusText\": \"pending\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:27:57.420591+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:27:57.420591+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"80644b76-5229-45ec-aaa4-37497fbc345a\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 0,\n            \"StatusText\": \"pending\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:27:56.88261+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:27:56.88261+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"fec43cbd-cc44-4fdd-9154-9c3bc98c544c\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 0,\n            \"StatusText\": \"pending\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:27:56.34781+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:27:56.34781+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"54fe2202-0d46-430b-a039-ec036d904d75\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 0,\n            \"StatusText\": \"pending\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:27:55.883778+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:27:55.883778+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"ca16ac33-1b35-431f-ae5a-02284e07f862\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 0,\n            \"StatusText\": \"pending\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:27:55.188957+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:27:55.188957+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"097bd01a-3786-4032-a2e8-0aef4f7aca29\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 0,\n            \"StatusText\": \"pending\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:27:53.579544+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:27:53.579544+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"c367f1d1-9379-48c7-9316-5fd18ca4febf\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 0,\n            \"StatusText\": \"pending\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:26:55.928897+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:26:55.928897+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"3c0dc945-cdf7-4127-b4b6-0403a878a8ea\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 0,\n            \"StatusText\": \"pending\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:23:44.919939+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:23:44.919939+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"b8d2d363-e22b-483a-8b18-a60ebadfa1c1\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 0,\n            \"StatusText\": \"pending\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:23:16.132595+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:23:16.132595+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"5e716648-82e0-4367-8dc7-fd2847fb342a\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 0,\n            \"StatusText\": \"pending\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:22:37.578621+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:22:37.578621+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"51b62065-f3ed-4816-bbfa-2eb9239cc0d2\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 0,\n            \"StatusText\": \"pending\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:21:26.548766+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:21:26.548766+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"af60e5d7-428d-4620-bd93-5c61338b1dce\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 0,\n            \"StatusText\": \"pending\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:20:15.735808+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:20:15.735808+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"d41a5744-8ebf-459e-bf39-eab707921d61\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 0,\n            \"StatusText\": \"pending\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:20:14.983145+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:20:14.983145+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"e5cb46d6-1f85-41a6-912c-caa64e89eae4\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 0,\n            \"StatusText\": \"pending\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:19:53.081441+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:19:53.081441+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"9692ad96-9661-479b-9266-739ee434ea37\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 0,\n            \"StatusText\": \"pending\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:19:47.604482+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:19:47.604482+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"2871a497-5855-43fc-8a98-ede2967aaaae\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 0,\n            \"StatusText\": \"pending\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:17:58.572566+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:17:58.572566+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"2fdffd73-8471-4280-8507-9631b8068bf0\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 0,\n            \"StatusText\": \"pending\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:17:16.591743+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:17:16.591743+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"86cfbec0-7d05-4faf-a03d-bb23d5963eff\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 0,\n            \"StatusText\": \"pending\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:16:19.827707+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:16:19.827707+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"063bf671-28c6-4d59-874a-30bf0c4121e5\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 0,\n            \"StatusText\": \"pending\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:14:41.384113+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:14:41.384113+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"3297b841-cd66-4e3a-9237-4fa95b39cf1c\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 0,\n            \"StatusText\": \"pending\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:11:51.320373+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:11:51.320373+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"a37e2f15-2663-41d9-9ddd-24cb1b0c0b5f\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 1,\n            \"StatusText\": \"success\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:10:15.084415+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:10:15.084415+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"9aba4958-e49b-4618-8478-306b7147f57c\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 1,\n            \"StatusText\": \"success\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:10:10.538711+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:10:10.538711+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"750afceb-f8f1-48e2-b587-d805ea2a8430\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 1,\n            \"StatusText\": \"success\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:09:43.209195+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:09:43.209195+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"b2fe3218-01ac-4893-8a86-2cac23f33400\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 1,\n            \"StatusText\": \"success\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T14:01:28.577286+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T14:01:28.577286+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        },\n        {\n            \"ID\": \"0faae018-04bc-4ce8-8933-042dc72de1ac\",\n            \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n            \"UserId\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"Debit\": 0,\n            \"Credit\": 10000,\n            \"Status\": 1,\n            \"StatusText\": \"success\",\n            \"TransactionFee\": 2500,\n            \"CreateAt\": \"2022-07-26T13:49:49.904747+07:00\",\n            \"CreatedBy\": \"50d700f7-7acb-40bc-a39f-b8a7c3cecb2b\",\n            \"UpdatedAt\": \"2022-07-26T13:49:49.904747+07:00\",\n            \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n            \"Bank\": {\n                \"ID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Mandiri\",\n                \"ShortName\": \"MDR\",\n                \"LogoUrl\": \"https://bankmandiri.co.id/image/layout_set_logo?img_id=31567&t=1658510036346\",\n                \"Code\": \"008\",\n                \"TransactionFee\": 2500\n            },\n            \"BankAccount\": {\n                \"ID\": \"09f8786d-dcef-4f70-a504-0351aa2ff8c4\",\n                \"BankID\": \"a5825b33-d12a-4c4b-9658-68f7a91515b2\",\n                \"Name\": \"Budi Mandiri\",\n                \"AccountNumber\": \"130130008653451954\"\n            }\n        }\n    ],\n    \"message\": \"get user latest transaction\",\n    \"status\": \"success\"\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

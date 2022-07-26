@@ -13,3 +13,5 @@
 <!-- How To Setup -->
 
 <!-- How To Run -->
+
+Public Api Doc : https://documenter.getpostman.com/view/1829038/UzXM1JEa
