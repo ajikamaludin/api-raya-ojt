@@ -106,3 +106,24 @@ func (favorite *FavoriteController) Store(c *fiber.Ctx) error {
 		"data":    bankAccountFavorite.ToBankAccountFavoriteRes(),
 	})
 }
+
+func (favorite *FavoriteController) Destroy(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	var bankAccountFavorite models.BankAccountFavorite
+	err := favorite.Service.Repository.GetAccountFavoriteUserBy(id, &bankAccountFavorite)
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"status":  constants.STATUS_FAIL,
+			"message": "favorite account not found",
+			"error":   err.Error(),
+		})
+	}
+
+	favorite.Service.Repository.DeleteAccountFavoriteUser(&bankAccountFavorite)
+
+	return c.Status(fiber.StatusNoContent).JSON(fiber.Map{
+		"status":  constants.STATUS_SUCCESS,
+		"message": "delete user favorite accounts",
+	})
+}

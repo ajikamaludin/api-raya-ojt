@@ -10,7 +10,7 @@ func (r *Repository) GetAllAccountFavoriteUser(userId uuid.UUID, query string, f
 
 	if query != "" {
 		query = "%" + query + "%"
-		err := db.Where("name = ? OR account_number = ?", query, query).
+		err := db.Where("name ilike ? OR account_number ilike ?", query, query).
 			Preload("Bankaccount").
 			Preload("RayaAccount.UserAccount").
 			Preload("Bank").
@@ -43,5 +43,19 @@ func (r *Repository) CreateAccountFavoriteUser(bankAccountFavorite *models.BankA
 
 	err := db.Preload("Bankaccount").Preload("RayaAccount").Preload("Bank").Create(&bankAccountFavorite).Error
 
+	return err
+}
+
+func (r *Repository) GetAccountFavoriteUserBy(id string, bankAccountFavorite *models.BankAccountFavorite) error {
+	db, _ := r.Gormdb.GetInstance()
+
+	err := db.First(&bankAccountFavorite, "id = ?", id).Error
+	return err
+}
+
+func (r *Repository) DeleteAccountFavoriteUser(bankAccountFavorite *models.BankAccountFavorite) error {
+	db, _ := r.Gormdb.GetInstance()
+
+	err := db.Delete(&bankAccountFavorite).Error
 	return err
 }

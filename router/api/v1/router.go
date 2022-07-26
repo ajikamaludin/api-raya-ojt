@@ -35,4 +35,5 @@ func ApiRoutes(app *fiber.App) {
 	routeAuth.Post("/check-account-number", bankController.CheckAccountNumber)
 	routeAuth.Get("/bank-account-favorites", favoriteController.GetAllAccountFavoriteUser)
 	routeAuth.Post("/bank-account-favorites", favoriteController.Store)
+	routeAuth.Delete("/bank-account-favorites/:id", favoriteController.Destroy)
 }
