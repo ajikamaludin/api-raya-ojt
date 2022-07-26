@@ -9,13 +9,13 @@ import (
 
 type BankTransaction struct {
 	ID               uuid.UUID `gorm:"primarykey;type:uuid"`
-	BankAccountId    uuid.UUID `gorm:"not null"`
-	BankId           uuid.UUID `gorm:"not null"`
-	UserId           uuid.UUID `gorm:"not null"`
+	BankAccountId    uuid.UUID `gorm:"not null;type:uuid"`
+	BankId           uuid.UUID `gorm:"not null;type:uuid"`
+	UserId           uuid.UUID `gorm:"not null;type:uuid"`
 	Debit            float64   `gorm:"not null"`
 	Credit           float64   `gorm:"not null"`
 	Status           int       `gorm:"not null"`
-	TransactionFeeId uuid.UUID
+	TransactionFeeId uuid.UUID `gorm:"type:uuid"`
 	CreatedAt        time.Time
 	UpdatedAt        time.Time
 	DeletedAt        gorm.DeletedAt `gorm:"index"`

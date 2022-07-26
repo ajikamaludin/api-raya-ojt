@@ -9,3 +9,11 @@ func MapBanksToBankRes(banks []models.Bank) []models.BankRes {
 	}
 	return bankres
 }
+
+func MapBankAccountFavoriteToRes(bankfavs []models.BankAccountFavorite) []models.BankAccountFavoriteRes {
+	var bankfavres []models.BankAccountFavoriteRes
+	for _, v := range bankfavs {
+		bankfavres = append(bankfavres, *v.ToBankAccountFavoriteRes())
+	}
+	return bankfavres
+}

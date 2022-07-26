@@ -7,9 +7,16 @@ import (
 	"gorm.io/gorm"
 )
 
+type BankAccountRes struct {
+	ID            uuid.UUID
+	BankID        uuid.UUID
+	Name          string
+	AccountNumber string
+}
+
 type BankAccount struct {
 	ID            uuid.UUID `gorm:"primarykey;type:uuid"`
-	BankId        uuid.UUID `gorm:"not null"`
+	BankID        uuid.UUID `gorm:"not null;type:uuid"`
 	Name          string    `gorm:"not null"`
 	AccountNumber string    `gorm:"not null"`
 	CreatedAt     time.Time
@@ -20,7 +27,14 @@ type BankAccount struct {
 	DeletedBy     uuid.UUID      `gorm:"type:uuid"`
 	ModCount      int
 	// Relation BelongsTo
-	Bank Bank `gorm:"references:BankId"`
+	BankAccountBank Bank `gorm:"foreignKey:bank_id"`
+}
+
+func (bankAcc *BankAccount) BeforeCreate(tx *gorm.DB) (err error) {
+	bankAcc.ID = uuid.New()
+	bankAcc.ModCount = 1
+
+	return
 }
 
 func (bankAcc *BankAccount) BeforeUpdate(tx *gorm.DB) (err error) {

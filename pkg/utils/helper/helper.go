@@ -5,6 +5,16 @@ import (
 	"gorm.io/gorm"
 )
 
+type ArtaJasaAccountNumberResponse struct {
+	Status  string
+	Message string
+	Data    struct {
+		BankName      string
+		AccountNumber string
+		HolderName    string
+	}
+}
+
 func SeedBank() *[]models.Bank {
 	banks := []models.Bank{
 		{
@@ -19,14 +29,14 @@ func SeedBank() *[]models.Bank {
 			ShortName:      "BRI",
 			LogoUrl:        "https://bankraya.co.id/img/logo.png",
 			Code:           "002",
-			TransactionFee: 2500,
+			TransactionFee: 0,
 		},
 		{
-			Name:           "Bank Rakya Indonesia",
-			ShortName:      "Raya",
+			Name:           "Bank Raya Indonesia",
+			ShortName:      "RAYA",
 			LogoUrl:        "https://bankraya.co.id/img/logo.png",
 			Code:           "002",
-			TransactionFee: 2500,
+			TransactionFee: 0,
 		},
 		{
 			Name:           "Bank Tabungan Pensiunan Nasional - Jenius",
@@ -136,4 +146,30 @@ func Seed(db *gorm.DB) {
 	}
 
 	tx.Commit()
+}
+
+func CallArtaJasaApi(accNumber string, bank *models.Bank, isOk bool) *ArtaJasaAccountNumberResponse {
+	// TODO: call api here and get response
+
+	// NOTE : im mocking the api result
+	if isOk {
+		return &ArtaJasaAccountNumberResponse{
+			Status:  "success",
+			Message: "account number found",
+			Data: struct {
+				BankName      string
+				AccountNumber string
+				HolderName    string
+			}{
+				BankName:      bank.Name,
+				AccountNumber: accNumber,
+				HolderName:    "Budi " + bank.Name,
+			},
+		}
+	}
+
+	return &ArtaJasaAccountNumberResponse{
+		Status:  "fail",
+		Message: "account number not found",
+	}
 }

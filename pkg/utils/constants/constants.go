@@ -9,3 +9,7 @@ const (
 	ENV_DEV  = "dev"
 	ENV_PROD = "prod"
 )
+
+const (
+	RAYA_BANK_CODE = "002"
+)

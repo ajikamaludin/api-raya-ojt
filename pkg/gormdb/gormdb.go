@@ -50,8 +50,8 @@ func (gdb *GormDB) GetInstance() (*gorm.DB, error) {
 				&models.User{},
 				&models.Account{},
 				&models.Bank{},
-				// &models.BankAccount{},
-				// &models.BankAccountFavorite{},
+				&models.BankAccount{},
+				&models.BankAccountFavorite{},
 				// &models.BankTransaction{},
 			)
 			helper.Seed(gdb.db)

@@ -13,14 +13,14 @@ type UserLoginReq struct {
 }
 
 type PinReq struct {
-	Pin string `validate:"required,min=6"`
+	Pin string `validate:"required,min=6,numeric"`
 }
 
 type UserRegisterReq struct {
 	Name     string `validate:"required,min=3"`
 	Email    string `validate:"required,min=3,email"`
 	Password string `validate:"required,min=6"`
-	Pin      string `validate:"required,min=6"`
+	Pin      string `validate:"required,min=6,numeric"`
 }
 
 type UserRes struct {
@@ -51,6 +51,7 @@ type User struct {
 
 func (user *User) BeforeCreate(tx *gorm.DB) (err error) {
 	user.ID = uuid.New()
+	user.ModCount = 1
 
 	return
 }

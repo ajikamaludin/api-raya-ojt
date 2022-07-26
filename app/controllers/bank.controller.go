@@ -25,6 +25,40 @@ func (bank *BankController) GetAllBanks(c *fiber.Ctx) error {
 	})
 }
 
-func (bank *BankController) ValidateAccountNumber(c *fiber.Ctx) error {
-	return nil
+func (bank *BankController) CheckAccountNumber(c *fiber.Ctx) error {
+	AccountNumberReq := new(models.AccountNumberReq)
+
+	c.BodyParser(&AccountNumberReq)
+
+	errors := bank.Service.Validator.ValidateRequest(AccountNumberReq)
+	if errors != nil {
+		return c.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{
+			"status":  constants.STATUS_FAIL,
+			"message": "request body invalid",
+			"error":   errors,
+		})
+	}
+
+	accountBank, err := bank.Service.Repository.CheckAccountNumber(AccountNumberReq.BankId, AccountNumberReq.AccountNumber)
+
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"status":  constants.STATUS_FAIL,
+			"message": "account bank number not found",
+			"error":   err.Error(),
+		})
+	}
+
+	if accountBank == nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"status":  constants.STATUS_FAIL,
+			"message": "account bank number not found",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status":  constants.STATUS_SUCCESS,
+		"message": "account bank number found",
+		"data":    accountBank,
+	})
 }

@@ -7,6 +7,18 @@ import (
 	"gorm.io/gorm"
 )
 
+type AccountNumberReq struct {
+	BankId        string `validate:"required,uuid"`
+	AccountNumber string `validate:"required,min=10,numeric"`
+}
+
+type AccountNumberRes struct {
+	BankId        string
+	AccountNumber string
+	Name          string
+	Bank          BankRes
+}
+
 type BankRes struct {
 	ID             uuid.UUID
 	Name           string
@@ -34,6 +46,7 @@ type Bank struct {
 
 func (bank *Bank) BeforeCreate(tx *gorm.DB) (err error) {
 	bank.ID = uuid.New()
+	bank.ModCount = 1
 
 	return
 }
