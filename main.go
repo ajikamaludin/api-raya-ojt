@@ -25,9 +25,9 @@ func main() {
 	app.Use(logger.New())
 
 	// default here : /
-	home.HomeRoutes(app)
+	home.Routes(app)
 	// api route : api/v1
-	apiv1.ApiRoutes(app)
+	apiv1.Routes(app)
 	// handle 404
 	router.Routes(app)
 

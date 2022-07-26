@@ -8,7 +8,7 @@ import (
 	jwtware "github.com/gofiber/jwt/v3"
 )
 
-func ApiRoutes(app *fiber.App) {
+func Routes(app *fiber.App) {
 	route := app.Group("/api/v1")
 
 	services := services.New()

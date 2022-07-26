@@ -46,7 +46,7 @@ func (r *Repository) CreateAccountFavoriteUser(bankAccountFavorite *models.BankA
 	return err
 }
 
-func (r *Repository) GetAccountFavoriteUserBy(id string, bankAccountFavorite *models.BankAccountFavorite) error {
+func (r *Repository) GetAccountFavoriteUserById(id string, bankAccountFavorite *models.BankAccountFavorite) error {
 	db, _ := r.Gormdb.GetInstance()
 
 	err := db.First(&bankAccountFavorite, "id = ?", id).Error

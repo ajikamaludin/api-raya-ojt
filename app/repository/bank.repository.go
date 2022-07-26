@@ -19,11 +19,11 @@ func (r Repository) GetAllBanks(banks *[]models.Bank, query string) (err error) 
 		if query != "" {
 			query = "%" + query + "%"
 			err = db.Where("name ILIKE ? OR code ILIKE ? OR short_name ILIKE ?", query, query, query).Find(&banks).Error
-			r.RedisClient.Set(key, banks, expired*time.Second) // NOTE : i make it expired in 30 second for demo mode
+			r.RedisClient.Set(key, banks, expired*time.Second) // NOTE : i make it expired in 100 second for demo mode
 			return
 		}
 		err = db.Find(&banks).Error
-		r.RedisClient.Set(key, banks, expired*time.Second) // NOTE : i make it expired in 30 second for demo mode
+		r.RedisClient.Set(key, banks, expired*time.Second) // NOTE : i make it expired in 100 second for demo mode
 	}
 
 	return

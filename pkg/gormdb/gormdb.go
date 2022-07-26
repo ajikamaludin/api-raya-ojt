@@ -8,7 +8,6 @@ import (
 	"github.com/ajikamaludin/api-raya-ojt/app/models"
 	"github.com/ajikamaludin/api-raya-ojt/pkg/utils/helper"
 
-	// "github.com/ajikamaludin/api-raya-ojt/app/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -48,11 +47,11 @@ func (gdb *GormDB) GetInstance() (*gorm.DB, error) {
 			// Migrate Here
 			gdb.db.AutoMigrate(
 				&models.User{},
-				&models.Account{},
+				&models.BankTransaction{},
 				&models.Bank{},
+				&models.Account{},
 				&models.BankAccount{},
 				&models.BankAccountFavorite{},
-				&models.BankTransaction{},
 			)
 			helper.Seed(gdb.db)
 		}

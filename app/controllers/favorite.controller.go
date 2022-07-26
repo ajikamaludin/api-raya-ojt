@@ -115,7 +115,7 @@ func (favorite *FavoriteController) Destroy(c *fiber.Ctx) error {
 	id := c.Params("id")
 
 	var bankAccountFavorite models.BankAccountFavorite
-	err := favorite.Serv.Repository.GetAccountFavoriteUserBy(id, &bankAccountFavorite)
+	err := favorite.Serv.Repository.GetAccountFavoriteUserById(id, &bankAccountFavorite)
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"status":  constants.STATUS_FAIL,

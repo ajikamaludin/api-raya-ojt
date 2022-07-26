@@ -35,7 +35,7 @@ func (r Repository) CreateUser(user *models.User) error {
 	rand.Seed(time.Now().UTC().UnixNano())
 	user.UserAccount = &models.Account{
 		AccountNumber: fmt.Sprintf("000%08d", rand.Intn(9999999999)),
-		Balance:       0,
+		Balance:       0, // default balance must be 0
 	}
 
 	err = db.Create(&user).Error

@@ -6,7 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func HomeRoutes(app *fiber.App) {
+func Routes(app *fiber.App) {
 	route := app.Group("/")
 
 	homeController := controller.HomeController{
