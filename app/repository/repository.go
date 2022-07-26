@@ -5,6 +5,7 @@ import (
 	"github.com/ajikamaludin/api-raya-ojt/pkg/redisclient"
 )
 
+// Any Kind Of DataNeeds from database or redis as data holder is access from repository
 type Repository struct {
 	Gormdb      *gormdb.GormDB
 	RedisClient *redisclient.RedisClient

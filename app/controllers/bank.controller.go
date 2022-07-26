@@ -9,14 +9,14 @@ import (
 )
 
 type BankController struct {
-	Service *services.Services
+	Serv *services.Services
 }
 
 func (bank *BankController) GetAllBanks(c *fiber.Ctx) error {
 	query := c.Query("query")
 
 	var banks []models.Bank
-	bank.Service.Repository.GetAllBanks(&banks, query)
+	bank.Serv.Repository.GetAllBanks(&banks, query)
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status":  constants.STATUS_SUCCESS,
@@ -30,7 +30,7 @@ func (bank *BankController) CheckAccountNumber(c *fiber.Ctx) error {
 
 	c.BodyParser(&AccountNumberReq)
 
-	errors := bank.Service.Validator.ValidateRequest(AccountNumberReq)
+	errors := bank.Serv.Validator.ValidateRequest(AccountNumberReq)
 	if errors != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{
 			"status":  constants.STATUS_FAIL,
@@ -39,7 +39,7 @@ func (bank *BankController) CheckAccountNumber(c *fiber.Ctx) error {
 		})
 	}
 
-	accountBank, err := bank.Service.Repository.CheckAccountNumber(AccountNumberReq.BankId, AccountNumberReq.AccountNumber)
+	accountBank, err := bank.Serv.Repository.CheckAccountNumber(AccountNumberReq.BankId, AccountNumberReq.AccountNumber)
 
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{

@@ -9,7 +9,7 @@ import (
 )
 
 type AuthController struct {
-	Service *services.Services
+	Serv *services.Services
 }
 
 func (auth *AuthController) Login(c *fiber.Ctx) error {
@@ -17,7 +17,7 @@ func (auth *AuthController) Login(c *fiber.Ctx) error {
 
 	_ = c.BodyParser(&userRequest)
 
-	errors := auth.Service.Validator.ValidateRequest(userRequest)
+	errors := auth.Serv.Validator.ValidateRequest(userRequest)
 	if errors != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{
 			"status":  constants.STATUS_FAIL,
@@ -27,7 +27,7 @@ func (auth *AuthController) Login(c *fiber.Ctx) error {
 	}
 
 	user := &models.User{}
-	auth.Service.Repository.GetUserByEmail(userRequest.Email, user)
+	auth.Serv.Repository.GetUserByEmail(userRequest.Email, user)
 
 	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(userRequest.Password))
 
@@ -39,7 +39,7 @@ func (auth *AuthController) Login(c *fiber.Ctx) error {
 		})
 	}
 
-	accessToken := auth.Service.JwtManager.CreateToken(user)
+	accessToken := auth.Serv.JwtManager.CreateToken(user)
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status":  constants.STATUS_SUCCESS,
@@ -57,7 +57,7 @@ func (auth *AuthController) Register(c *fiber.Ctx) error {
 
 	_ = c.BodyParser(&userRequest)
 
-	errors := auth.Service.Validator.ValidateRequest(userRequest)
+	errors := auth.Serv.Validator.ValidateRequest(userRequest)
 	if errors != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{
 			"status":  constants.STATUS_FAIL,
@@ -75,7 +75,7 @@ func (auth *AuthController) Register(c *fiber.Ctx) error {
 		Pin:      string(hashedPin),
 	}
 
-	err := auth.Service.Repository.GetUserByEmail(userRequest.Email, user)
+	err := auth.Serv.Repository.GetUserByEmail(userRequest.Email, user)
 	if err == nil {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{
 			"status":  constants.STATUS_FAIL,
@@ -84,9 +84,9 @@ func (auth *AuthController) Register(c *fiber.Ctx) error {
 		})
 	}
 
-	auth.Service.Repository.CreateUser(user)
+	auth.Serv.Repository.CreateUser(user)
 
-	accessToken := auth.Service.JwtManager.CreateToken(user)
+	accessToken := auth.Serv.JwtManager.CreateToken(user)
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status":  constants.STATUS_SUCCESS,
@@ -104,7 +104,7 @@ func (auth *AuthController) ValidatePin(c *fiber.Ctx) error {
 
 	_ = c.BodyParser(&pinRequest)
 
-	errors := auth.Service.Validator.ValidateRequest(pinRequest)
+	errors := auth.Serv.Validator.ValidateRequest(pinRequest)
 	if errors != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{
 			"status":  constants.STATUS_FAIL,
@@ -113,8 +113,8 @@ func (auth *AuthController) ValidatePin(c *fiber.Ctx) error {
 		})
 	}
 
-	userId := auth.Service.JwtManager.GetUserId(c)
-	err := auth.Service.Repository.ValidatePin(userId, pinRequest.Pin)
+	userId := auth.Serv.JwtManager.GetUserId(c)
+	err := auth.Serv.Repository.ValidatePin(userId, pinRequest.Pin)
 	if err != nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"status":  constants.STATUS_FAIL,

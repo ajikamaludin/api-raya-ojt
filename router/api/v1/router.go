@@ -13,13 +13,16 @@ func ApiRoutes(app *fiber.App) {
 
 	services := services.New()
 	authController := &controllers.AuthController{
-		Service: services,
+		Serv: services,
 	}
 	bankController := &controllers.BankController{
-		Service: services,
+		Serv: services,
 	}
 	favoriteController := &controllers.FavoriteController{
-		Service: services,
+		Serv: services,
+	}
+	transactionController := &controllers.TransactionController{
+		Serv: services,
 	}
 
 	route.Post("/register", authController.Register)
@@ -32,8 +35,14 @@ func ApiRoutes(app *fiber.App) {
 
 	routeAuth.Post("/validate-account-pin", authController.ValidatePin)
 	routeAuth.Get("/banks", bankController.GetAllBanks)
-	routeAuth.Post("/check-account-number", bankController.CheckAccountNumber)
+	routeAuth.Post("/banks/check-account-number", bankController.CheckAccountNumber)
+
 	routeAuth.Get("/bank-account-favorites", favoriteController.GetAllAccountFavoriteUser)
 	routeAuth.Post("/bank-account-favorites", favoriteController.Store)
 	routeAuth.Delete("/bank-account-favorites/:id", favoriteController.Destroy)
+
+	routeAuth.Get("/transactions/latest-transactions", transactionController.GetLatestTransactions)
+	routeAuth.Get("/transactions/account-balance", transactionController.GetBalance)
+	routeAuth.Post("/transactions", transactionController.CreateTransactions)
+	routeAuth.Get("/transactions/:id", transactionController.ShowTransaction)
 }

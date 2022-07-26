@@ -9,15 +9,15 @@ import (
 )
 
 type FavoriteController struct {
-	Service *services.Services
+	Serv *services.Services
 }
 
 func (favorite *FavoriteController) GetAllAccountFavoriteUser(c *fiber.Ctx) error {
 	query := c.Query("query")
 
 	var favorites []models.BankAccountFavorite
-	userId := favorite.Service.JwtManager.GetUserId(c)
-	favorite.Service.Repository.GetAllAccountFavoriteUser(userId, query, &favorites)
+	userId := favorite.Serv.JwtManager.GetUserId(c)
+	favorite.Serv.Repository.GetAllAccountFavoriteUser(userId, query, &favorites)
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status":  constants.STATUS_SUCCESS,
@@ -31,7 +31,7 @@ func (favorite *FavoriteController) Store(c *fiber.Ctx) error {
 
 	c.BodyParser(&bankAccountFavoriteReq)
 
-	errors := favorite.Service.Validator.ValidateRequest(bankAccountFavoriteReq)
+	errors := favorite.Serv.Validator.ValidateRequest(bankAccountFavoriteReq)
 	if errors != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{
 			"status":  constants.STATUS_FAIL,
@@ -40,9 +40,9 @@ func (favorite *FavoriteController) Store(c *fiber.Ctx) error {
 		})
 	}
 
+	// validate bank is exists
 	var bank models.Bank
-
-	err := favorite.Service.Repository.GetBankById(bankAccountFavoriteReq.BankID, &bank)
+	err := favorite.Serv.Repository.GetBankById(bankAccountFavoriteReq.BankID, &bank)
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"status":  constants.STATUS_FAIL,
@@ -51,10 +51,11 @@ func (favorite *FavoriteController) Store(c *fiber.Ctx) error {
 		})
 	}
 
-	userId := favorite.Service.JwtManager.GetUserId(c)
+	userId := favorite.Serv.JwtManager.GetUserId(c)
 	var bankAccountFavorite models.BankAccountFavorite
 
-	err = favorite.Service.Repository.GetAccountFavoriteUserByAccountNumber(
+	// validate bank account is not in favorite
+	err = favorite.Serv.Repository.GetAccountFavoriteUserByAccountNumber(
 		userId, bankAccountFavoriteReq.AccountNumber, &bank, &bankAccountFavorite,
 	)
 
@@ -70,11 +71,13 @@ func (favorite *FavoriteController) Store(c *fiber.Ctx) error {
 		BankId:        bank.ID,
 		Name:          bankAccountFavoriteReq.Name,
 		AccountNumber: bankAccountFavoriteReq.AccountNumber,
+		CreatedBy:     userId, // note: this is must be not here, it must be set automate from gorm hooks, find out leter.
 	}
 
+	// validate bank is raya or outside bank
 	if bank.Code == constants.RAYA_BANK_CODE {
 		var account models.Account
-		err = favorite.Service.Repository.GetBankRayaAccount(bankAccountFavoriteReq.AccountNumber, &account)
+		err = favorite.Serv.Repository.GetBankRayaAccount(bankAccountFavoriteReq.AccountNumber, &account)
 		if err != nil {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 				"status":  constants.STATUS_FAIL,
@@ -86,7 +89,7 @@ func (favorite *FavoriteController) Store(c *fiber.Ctx) error {
 		bankAccountFavorite.RayaAccount = &account
 	} else {
 		var bankAccount models.BankAccount
-		err = favorite.Service.Repository.GetBankAccountByAccountNumber(bankAccountFavoriteReq.AccountNumber, bank, &bankAccount)
+		err = favorite.Serv.Repository.GetBankAccountByAccountNumber(bankAccountFavoriteReq.AccountNumber, bank, &bankAccount)
 		if err != nil {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 				"status":  constants.STATUS_FAIL,
@@ -98,7 +101,8 @@ func (favorite *FavoriteController) Store(c *fiber.Ctx) error {
 		bankAccountFavorite.Bankaccount = &bankAccount
 	}
 
-	favorite.Service.Repository.CreateAccountFavoriteUser(&bankAccountFavorite)
+	// create
+	favorite.Serv.Repository.CreateAccountFavoriteUser(&bankAccountFavorite)
 
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
 		"status":  constants.STATUS_SUCCESS,
@@ -111,7 +115,7 @@ func (favorite *FavoriteController) Destroy(c *fiber.Ctx) error {
 	id := c.Params("id")
 
 	var bankAccountFavorite models.BankAccountFavorite
-	err := favorite.Service.Repository.GetAccountFavoriteUserBy(id, &bankAccountFavorite)
+	err := favorite.Serv.Repository.GetAccountFavoriteUserBy(id, &bankAccountFavorite)
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"status":  constants.STATUS_FAIL,
@@ -120,7 +124,7 @@ func (favorite *FavoriteController) Destroy(c *fiber.Ctx) error {
 		})
 	}
 
-	favorite.Service.Repository.DeleteAccountFavoriteUser(&bankAccountFavorite)
+	favorite.Serv.Repository.DeleteAccountFavoriteUser(&bankAccountFavorite)
 
 	return c.Status(fiber.StatusNoContent).JSON(fiber.Map{
 		"status":  constants.STATUS_SUCCESS,

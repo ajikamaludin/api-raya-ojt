@@ -7,7 +7,7 @@ import (
 )
 
 type HomeController struct {
-	Service *services.Services
+	Serv *services.Services
 }
 
 func (hc *HomeController) Home(c *fiber.Ctx) error {
@@ -15,8 +15,8 @@ func (hc *HomeController) Home(c *fiber.Ctx) error {
 		"status":  constants.STATUS_SUCCESS,
 		"message": "Ok",
 		"data": map[string]string{
-			"app_name": hc.Service.Configs.Appconfig.Name,
-			"app_env":  hc.Service.Configs.Appconfig.Env,
+			"app_name": hc.Serv.Configs.Appconfig.Name,
+			"app_env":  hc.Serv.Configs.Appconfig.Env,
 		},
 		"error": "",
 	})

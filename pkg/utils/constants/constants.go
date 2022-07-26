@@ -13,3 +13,9 @@ const (
 const (
 	RAYA_BANK_CODE = "002"
 )
+
+const (
+	TRX_PENDING = 0
+	TRX_SUCCESS = 1
+	TRX_FAIL    = 2
+)

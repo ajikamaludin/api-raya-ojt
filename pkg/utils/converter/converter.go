@@ -17,3 +17,12 @@ func MapBankAccountFavoriteToRes(bankfavs []models.BankAccountFavorite) []models
 	}
 	return bankfavres
 }
+
+func MapBankTransactionToRes(banktrx []models.BankTransaction) []models.BankTransactionRes {
+	var banktrxres []models.BankTransactionRes
+	for _, v := range banktrx {
+		banktrxres = append(banktrxres, v.ToBankTransactionRes())
+	}
+
+	return banktrxres
+}

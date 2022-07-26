@@ -10,7 +10,7 @@ func HomeRoutes(app *fiber.App) {
 	route := app.Group("/")
 
 	homeController := controller.HomeController{
-		Service: services.New(),
+		Serv: services.New(),
 	}
 
 	route.Get("/", homeController.Home)

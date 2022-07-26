@@ -42,3 +42,12 @@ func (bankAcc *BankAccount) BeforeUpdate(tx *gorm.DB) (err error) {
 
 	return
 }
+
+func (bankAcc *BankAccount) ToBankAccountRes() *BankAccountRes {
+	return &BankAccountRes{
+		ID:            bankAcc.ID,
+		BankID:        bankAcc.BankID,
+		Name:          bankAcc.Name,
+		AccountNumber: bankAcc.AccountNumber,
+	}
+}
