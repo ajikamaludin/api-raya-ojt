@@ -70,29 +70,41 @@ func (trx *TransactionController) CreateTransactions(c *fiber.Ctx) error {
 		})
 	}
 
-	var account models.BankAccount
-	err = trx.Serv.Repository.GetBankAccountByAccountNumber(createBankTransactionReq.AccountNumber, bank, &account)
-	if err != nil {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"status":  constants.STATUS_FAIL,
-			"message": "bank account number not valid",
-			"error":   err.Error(),
-		})
-	}
-
 	userId := trx.Serv.JwtManager.GetUserId(c)
-
-	transaction := models.BankTransaction{
-		BankAccountId: account.ID,
-		BankId:        bank.ID,
-		UserId:        userId,
-		Debit:         0,
-		Credit:        createBankTransactionReq.Amount,
-		Status:        constants.TRX_PENDING,
-		CreatedBy:     userId, // note: use gorm hook
+	transaction := &models.BankTransaction{
+		BankId:    bank.ID,
+		UserId:    userId,
+		Debit:     0,
+		Credit:    createBankTransactionReq.Amount,
+		Status:    constants.TRX_PENDING,
+		CreatedBy: userId, // note: use gorm hook
 	}
 
-	err = trx.Serv.Repository.CreateBankTransaction(&transaction, &bank)
+	if bank.Code == constants.RAYA_BANK_CODE {
+		var account models.Account
+		err = trx.Serv.Repository.GetBankRayaAccount(createBankTransactionReq.AccountNumber, &account)
+		if err != nil {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+				"status":  constants.STATUS_FAIL,
+				"message": "bank account number not valid",
+				"error":   err.Error(),
+			})
+		}
+		transaction.AccountId = account.ID
+	} else {
+		var bankAccount models.BankAccount
+		err = trx.Serv.Repository.GetBankAccountByAccountNumber(createBankTransactionReq.AccountNumber, bank, &bankAccount)
+		if err != nil {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+				"status":  constants.STATUS_FAIL,
+				"message": "bank account number not valid",
+				"error":   err.Error(),
+			})
+		}
+		transaction.BankAccountId = bankAccount.ID
+	}
+
+	err = trx.Serv.Repository.CreateBankTransaction(transaction, &bank)
 	if err != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{
 			"status":  constants.STATUS_FAIL,

@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/ajikamaludin/api-raya-ojt/app/configs"
+	"github.com/ajikamaludin/api-raya-ojt/app/services"
 	"github.com/ajikamaludin/api-raya-ojt/router"
 	apiv1 "github.com/ajikamaludin/api-raya-ojt/router/api/v1"
 	home "github.com/ajikamaludin/api-raya-ojt/router/home"
@@ -24,10 +25,13 @@ func main() {
 	app.Use(recover.New())
 	app.Use(logger.New())
 
+	services := services.New()
+	defer services.Db.Conn.Close()
+
 	// default here : /
 	home.Routes(app)
 	// api route : api/v1
-	apiv1.Routes(app)
+	apiv1.Routes(app, services)
 	// handle 404
 	router.Routes(app)
 

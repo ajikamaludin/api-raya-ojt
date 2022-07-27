@@ -71,15 +71,21 @@ func (r *Repository) CreateBankTransaction(trx *models.BankTransaction, bank *mo
 	trx.Bank = &models.Bank{}
 	db.First(&trx.Bank, "id = ?", trx.BankId)
 
-	trx.Bankaccount = &models.BankAccount{}
-	db.First(&trx.Bankaccount, "id = ?", trx.BankAccountId)
+	if trx.AccountId != (uuid.UUID{}) {
+		trx.RayaAccount = &models.Account{}
+		db.Preload("UserAccount").First(&trx.RayaAccount, "id = ?", trx.AccountId)
+	}
+	if trx.BankAccountId != (uuid.UUID{}) {
+		trx.Bankaccount = &models.BankAccount{}
+		db.First(&trx.Bankaccount, "id = ?", trx.BankAccountId)
+	}
 
 	if trx.TransactionFeeId != (uuid.UUID{}) { // uuid not nil
 		trx.TransactionFee = &models.BankTransaction{}
 		db.First(&trx.TransactionFee, "id = ?", trx.TransactionFeeId)
 	}
 
-	// TODO: publish transaction to PUB/SUB
+	// TODO: publish transaction to PUB/SUB use goroutine
 	return nil
 }
 
@@ -87,6 +93,7 @@ func (r *Repository) GetTransactionById(id string, trx *models.BankTransaction) 
 	db, _ := r.Gormdb.GetInstance()
 
 	err := db.Preload("TransactionFee").Preload("Bankaccount").
+		Preload("RayaAccount.UserAccount").
 		Preload("Bank").First(&trx, "id = ?", id).Error
 	return err
 }
@@ -95,9 +102,10 @@ func (r *Repository) GetLatestTransactions(userId uuid.UUID, transactions *[]mod
 	db, _ := r.Gormdb.GetInstance()
 
 	err := db.Order("created_at DESC").
-		Where("bank_account_id is not null").
+		Where("debit = 0 AND (bank_account_id IS NOT NULL OR account_id IS NOT NULL)").
 		Preload("Bank").
 		Preload("Bankaccount").
+		Preload("RayaAccount.UserAccount").
 		Preload("TransactionFee").
 		Find(&transactions, "user_id = ?", userId).Error
 

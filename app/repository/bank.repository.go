@@ -92,7 +92,10 @@ func (r *Repository) GetBankAccountByAccountNumber(accountNumber string, bank mo
 	db, _ := r.Gormdb.GetInstance()
 
 	err := db.First(&bankAccount, "account_number = ? AND bank_id = ?", accountNumber, bank.ID).Error
-	return err
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *Repository) GetAccountNumberFromArtaJasa(accNumber string, bank *models.Bank, bankAccount *models.BankAccount, isSaveResult bool) error {

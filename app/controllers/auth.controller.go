@@ -150,3 +150,12 @@ func (auth *AuthController) ErrorHandler(c *fiber.Ctx, err error) error {
 		"message": "Unauthorized",
 	})
 }
+
+func (auth *AuthController) InjectBalance(c *fiber.Ctx) error {
+	user_id := auth.Serv.JwtManager.GetUserId(c)
+	auth.Serv.Repository.InjectBalance(user_id)
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status": constants.STATUS_SUCCESS,
+	})
+}

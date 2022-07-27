@@ -46,4 +46,16 @@ func (r Repository) CreateUser(user *models.User) error {
 	return nil
 }
 
-func (r Repository) Seed() {}
+func (r Repository) InjectBalance(userId uuid.UUID) error {
+	db, err := r.Gormdb.GetInstance()
+	account := models.Account{}
+
+	err = db.First(&account, "user_id = ?", userId).Error
+
+	// Only if balance is 0
+	if account.Balance <= 0 {
+		err = db.Model(&account).Where("user_id = ?", userId).Update("balance", 100000).Error
+	}
+
+	return err
+}

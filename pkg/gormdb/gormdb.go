@@ -1,6 +1,7 @@
 package gormdb
 
 import (
+	"database/sql"
 	"fmt"
 	"sync"
 
@@ -15,7 +16,8 @@ import (
 var lock = &sync.Mutex{}
 
 type GormDB struct {
-	db *gorm.DB
+	Db   *gorm.DB
+	Conn *sql.DB
 }
 
 func New() *GormDB {
@@ -23,7 +25,7 @@ func New() *GormDB {
 }
 
 func (gdb *GormDB) GetInstance() (*gorm.DB, error) {
-	if gdb.db == nil {
+	if gdb.Db == nil {
 		configs := configs.GetInstance()
 
 		dsn := fmt.Sprintf(
@@ -37,7 +39,10 @@ func (gdb *GormDB) GetInstance() (*gorm.DB, error) {
 		)
 		lock.Lock()
 		var err error
-		gdb.db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+		gdb.Conn, err = sql.Open("pgx", dsn)
+		gdb.Db, err = gorm.Open(postgres.New(postgres.Config{
+			Conn: gdb.Conn,
+		}), &gorm.Config{})
 		lock.Unlock()
 		if err != nil {
 			return nil, err
@@ -45,7 +50,7 @@ func (gdb *GormDB) GetInstance() (*gorm.DB, error) {
 
 		if configs.Dbconfig.DbIsMigrate {
 			// Migrate Here
-			gdb.db.AutoMigrate(
+			gdb.Db.AutoMigrate(
 				&models.User{},
 				&models.BankTransaction{},
 				&models.Bank{},
@@ -53,10 +58,10 @@ func (gdb *GormDB) GetInstance() (*gorm.DB, error) {
 				&models.BankAccount{},
 				&models.BankAccountFavorite{},
 			)
-			helper.Seed(gdb.db)
+			helper.Seed(gdb.Db)
 		}
-		return gdb.db, nil
+		return gdb.Db, nil
 	}
 	// fmt.Println("[DATABASE] : ", gdb.db)
-	return gdb.db, nil
+	return gdb.Db, nil
 }

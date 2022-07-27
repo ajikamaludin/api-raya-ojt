@@ -22,10 +22,10 @@ type BankAccount struct {
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
 	DeletedAt     gorm.DeletedAt `gorm:"index"`
-	CreatedBy     uuid.UUID      `gorm:"type:uuid"`
-	UpdatedBy     uuid.UUID      `gorm:"type:uuid"`
-	DeletedBy     uuid.UUID      `gorm:"type:uuid"`
-	ModCount      int
+	CreatedBy     uuid.UUID      `gorm:"type:uuid;default:null"`
+	UpdatedBy     uuid.UUID      `gorm:"type:uuid;default:null"`
+	DeletedBy     uuid.UUID      `gorm:"type:uuid;default:null"`
+	ModCount      int            `gorm:"default:0"`
 	// Relation BelongsTo
 	BankAccountBank Bank `gorm:"foreignKey:bank_id"`
 }

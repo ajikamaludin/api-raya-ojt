@@ -8,10 +8,9 @@ import (
 	jwtware "github.com/gofiber/jwt/v3"
 )
 
-func Routes(app *fiber.App) {
+func Routes(app *fiber.App, services *services.Services) {
 	route := app.Group("/api/v1")
 
-	services := services.New()
 	authController := &controllers.AuthController{
 		Serv: services,
 	}
@@ -45,4 +44,5 @@ func Routes(app *fiber.App) {
 	routeAuth.Get("/transactions/account-balance", transactionController.GetBalance)
 	routeAuth.Post("/transactions", transactionController.CreateTransactions)
 	routeAuth.Get("/transactions/:id", transactionController.ShowTransaction)
+	routeAuth.Post("/test/injetct-balance", authController.InjectBalance)
 }

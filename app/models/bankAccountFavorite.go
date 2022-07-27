@@ -33,10 +33,10 @@ type BankAccountFavorite struct {
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
 	DeletedAt     gorm.DeletedAt `gorm:"index"`
-	CreatedBy     uuid.UUID      `gorm:"type:uuid"`
-	UpdatedBy     uuid.UUID      `gorm:"type:uuid"`
-	DeletedBy     uuid.UUID      `gorm:"type:uuid"`
-	ModCount      int
+	CreatedBy     uuid.UUID      `gorm:"type:uuid;default:null"`
+	UpdatedBy     uuid.UUID      `gorm:"type:uuid;default:null"`
+	DeletedBy     uuid.UUID      `gorm:"type:uuid;default:null"`
+	ModCount      int            `gorm:"default:0"`
 	// Relation BelongsTo
 	Bankaccount *BankAccount `gorm:"foreignKey:BankAccountId"`
 	RayaAccount *Account     `gorm:"foreignKey:AccountId"`

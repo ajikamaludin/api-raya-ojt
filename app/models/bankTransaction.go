@@ -34,6 +34,7 @@ type BankTransactionRes struct {
 type BankTransaction struct {
 	ID               uuid.UUID `gorm:"primarykey;type:uuid"`
 	BankAccountId    uuid.UUID `gorm:"type:uuid;default:null"`
+	AccountId        uuid.UUID `gorm:"type:uuid;default:null"`
 	BankId           uuid.UUID `gorm:"type:uuid;default:null"`
 	UserId           uuid.UUID `gorm:"not null;type:uuid"`
 	Debit            float64   `gorm:"not null;default:0"`
@@ -43,11 +44,12 @@ type BankTransaction struct {
 	CreatedAt        time.Time
 	UpdatedAt        time.Time
 	DeletedAt        gorm.DeletedAt `gorm:"index"`
-	CreatedBy        uuid.UUID      `gorm:"type:uuid"`
-	UpdatedBy        uuid.UUID      `gorm:"type:uuid"`
-	DeletedBy        uuid.UUID      `gorm:"type:uuid"`
-	ModCount         int
+	CreatedBy        uuid.UUID      `gorm:"type:uuid;default:null"`
+	UpdatedBy        uuid.UUID      `gorm:"type:uuid;default:null"`
+	DeletedBy        uuid.UUID      `gorm:"type:uuid;default:null"`
+	ModCount         int            `gorm:"default:0"`
 	// Relation BelongsTo
+	RayaAccount    *Account         `gorm:"foreignKey:AccountId"`
 	Bankaccount    *BankAccount     `gorm:"foreignKey:BankAccountId"`
 	Bank           *Bank            `gorm:"foreignKey:BankId"`
 	User           User             `gorm:"foreignKey:UserId"`
@@ -99,6 +101,15 @@ func (banktrx *BankTransaction) ToBankTransactionRes() BankTransactionRes {
 
 	if banktrx.Bankaccount != nil {
 		bankTrxRes.BankAccount = *banktrx.Bankaccount.ToBankAccountRes()
+	}
+
+	if banktrx.RayaAccount != nil && banktrx.RayaAccount.UserAccount != nil {
+		bankTrxRes.BankAccount = BankAccountRes{
+			ID:            banktrx.RayaAccount.ID,
+			BankID:        banktrx.BankId,
+			Name:          banktrx.RayaAccount.UserAccount.Name,
+			AccountNumber: banktrx.RayaAccount.AccountNumber,
+		}
 	}
 
 	return bankTrxRes

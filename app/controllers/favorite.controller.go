@@ -86,7 +86,6 @@ func (favorite *FavoriteController) Store(c *fiber.Ctx) error {
 			})
 		}
 		bankAccountFavorite.AccountId = account.ID
-		bankAccountFavorite.RayaAccount = &account
 	} else {
 		var bankAccount models.BankAccount
 		err = favorite.Serv.Repository.GetBankAccountByAccountNumber(bankAccountFavoriteReq.AccountNumber, bank, &bankAccount)
@@ -98,7 +97,6 @@ func (favorite *FavoriteController) Store(c *fiber.Ctx) error {
 			})
 		}
 		bankAccountFavorite.BankAccountId = bankAccount.ID
-		bankAccountFavorite.Bankaccount = &bankAccount
 	}
 
 	// create

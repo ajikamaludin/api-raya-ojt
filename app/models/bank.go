@@ -38,15 +38,14 @@ type Bank struct {
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
 	DeletedAt      gorm.DeletedAt `gorm:"index"`
-	CreatedBy      uuid.UUID      `gorm:"type:uuid"`
-	UpdatedBy      uuid.UUID      `gorm:"type:uuid"`
-	DeletedBy      uuid.UUID      `gorm:"type:uuid"`
-	ModCount       int
+	CreatedBy      uuid.UUID      `gorm:"type:uuid;default:null"`
+	UpdatedBy      uuid.UUID      `gorm:"type:uuid;default:null"`
+	DeletedBy      uuid.UUID      `gorm:"type:uuid;default:null"`
+	ModCount       int            `gorm:"default:0"`
 }
 
 func (bank *Bank) BeforeCreate(tx *gorm.DB) (err error) {
 	bank.ID = uuid.New()
-	bank.ModCount = 1
 
 	return
 }

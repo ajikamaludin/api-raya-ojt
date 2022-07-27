@@ -41,7 +41,9 @@ func (r *Repository) GetAccountFavoriteUserByAccountNumber(
 func (r *Repository) CreateAccountFavoriteUser(bankAccountFavorite *models.BankAccountFavorite) error {
 	db, _ := r.Gormdb.GetInstance()
 
-	err := db.Preload("Bankaccount").Preload("RayaAccount").Preload("Bank").Create(&bankAccountFavorite).Error
+	err := db.Create(&bankAccountFavorite).Error
+
+	err = db.Preload("Bankaccount").Preload("RayaAccount").Preload("Bank").First(&bankAccountFavorite).Error
 
 	return err
 }

@@ -103,7 +103,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Aji Kamaludin\",\n    \"email\": \"ajikamaludin@gmail.com\",\n    \"password\": \"password123.\",\n    \"pin\": \"123123\"\n}",
+									"raw": "{\n    \"name\": \"{{name}}\",\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\",\n    \"pin\": \"{{pin}}\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -111,15 +111,11 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:3000/api/v1/register",
-									"protocol": "http",
+									"raw": "{{host_api_version}}/register",
 									"host": [
-										"localhost"
+										"{{host_api_version}}"
 									],
-									"port": "3000",
 									"path": [
-										"api",
-										"v1",
 										"register"
 									]
 								}
@@ -843,7 +839,7 @@
 			"name": "Favorite",
 			"item": [
 				{
-					"name": "Create",
+					"name": "Create Account Favorite",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -859,7 +855,7 @@
 							"script": {
 								"exec": [
 									"pm.test('test status code', () => {",
-									"    pm.response.to.have.status(200)",
+									"    pm.response.to.have.status(201)",
 									"});",
 									"",
 									"pm.test('test is ok!', () => {",
@@ -1136,7 +1132,7 @@
 					]
 				},
 				{
-					"name": "Delete",
+					"name": "Delete Account Favorite",
 					"event": [
 						{
 							"listen": "test",
@@ -1344,7 +1340,7 @@
 							"script": {
 								"exec": [
 									"pm.test('test status code', () => {",
-									"    pm.response.to.have.status(200)",
+									"    pm.response.to.have.status(201)",
 									"});",
 									"",
 									"pm.test('test is ok!', () => {",
@@ -1354,6 +1350,28 @@
 									"    pm.expect(responseJson.status).to.equals('success');",
 									"    pm.environment.set(\"transactionId\", responseJson.data.ID)",
 									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const injetct = {",
+									"    url: `${pm.environment.get('host_api_version')}/test/injetct-balance`,",
+									"    method: 'POST',",
+									"    header: {",
+									"        'Content-Type': 'application/json',",
+									"        'Authorization': `Bearer ${pm.environment.get('token')}`",
+									"    },",
+									"};",
+									" ",
+									"pm.sendRequest(injetct, (error, response) => {",
+									"    console.log(error ? error : response);",
+									"    const result = response.json()",
+									"    console.log(result)",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -1479,6 +1497,108 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"error\": \"balance is not enough\",\n    \"message\": \"transaction is invalid\",\n    \"status\": \"fail\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Create Transaction: Internal",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('test status code', () => {",
+									"    pm.response.to.have.status(201)",
+									"});",
+									"",
+									"pm.test('test is ok!', () => {",
+									"    const responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson).to.haveOwnProperty('data');",
+									"    pm.expect(responseJson.status).to.equals('success');",
+									"    pm.environment.set(\"transactionId\", responseJson.data.ID)",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"BankId\": \"{{bankRayaId}}\",\n    \"AccountNumber\": \"{{bankRayaAccountNumber}}\",\n    \"Amount\": 10011\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host_api_version}}/transactions",
+							"host": [
+								"{{host_api_version}}"
+							],
+							"path": [
+								"transactions"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"BankId\": \"{{bankRayaId}}\",\n    \"AccountNumber\": \"{{bankRayaAccountNumber}}\",\n    \"Amount\": 10011\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host_api_version}}/transactions",
+									"host": [
+										"{{host_api_version}}"
+									],
+									"path": [
+										"transactions"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Wed, 27 Jul 2022 01:40:23 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "824"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"ID\": \"68a1fe21-c144-4b22-8bdc-aa2848a0fa67\",\n        \"BankID\": \"a2d492cf-223f-49d5-b6d7-a6c117a70d1f\",\n        \"UserId\": \"55454659-93f9-453c-9328-cfa75db7fce2\",\n        \"Debit\": 0,\n        \"Credit\": 10011,\n        \"Status\": 0,\n        \"StatusText\": \"pending\",\n        \"TransactionFee\": 0,\n        \"CreateAt\": \"2022-07-27T08:40:23.781667796+07:00\",\n        \"CreatedBy\": \"55454659-93f9-453c-9328-cfa75db7fce2\",\n        \"UpdatedAt\": \"2022-07-27T08:40:23.781667796+07:00\",\n        \"UpdatedBy\": \"00000000-0000-0000-0000-000000000000\",\n        \"Bank\": {\n            \"ID\": \"a2d492cf-223f-49d5-b6d7-a6c117a70d1f\",\n            \"Name\": \"Bank Raya Indonesia\",\n            \"ShortName\": \"RAYA\",\n            \"LogoUrl\": \"https://bankraya.co.id/img/logo.png\",\n            \"Code\": \"002\",\n            \"TransactionFee\": 0\n        },\n        \"BankAccount\": {\n            \"ID\": \"80bf1d10-fd2a-4367-a8d6-3f418a4d738b\",\n            \"BankID\": \"a2d492cf-223f-49d5-b6d7-a6c117a70d1f\",\n            \"Name\": \"Aji Kamaludin\",\n            \"AccountNumber\": \"0005611982378\"\n        }\n    },\n    \"message\": \"transaction created\",\n    \"status\": \"success\"\n}"
 						}
 					]
 				},
