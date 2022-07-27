@@ -9,7 +9,7 @@ import (
 
 type AccountNumberReq struct {
 	BankId        string `validate:"required,uuid"`
-	AccountNumber string `validate:"required,min=10,numeric"`
+	AccountNumber string `validate:"required,min=6,numeric"`
 }
 
 type AccountNumberRes struct {

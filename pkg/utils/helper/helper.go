@@ -1,6 +1,11 @@
 package helper
 
 import (
+	"encoding/json"
+	"errors"
+	. "net/http"
+	"time"
+
 	"github.com/ajikamaludin/api-raya-ojt/app/models"
 	"gorm.io/gorm"
 )
@@ -13,6 +18,13 @@ type ArtaJasaAccountNumberResponse struct {
 		AccountNumber string
 		HolderName    string
 	}
+}
+
+type ApiReposnse struct {
+	CreatedAt     time.Time `json:"createdAt"`
+	Name          string    `json:"name"`
+	AccountNumber string    `json:"accountNumber"`
+	ID            string    `json:"id"`
 }
 
 func SeedBank() *[]models.Bank {
@@ -148,11 +160,30 @@ func Seed(db *gorm.DB) {
 	tx.Commit()
 }
 
-func CallArtaJasaApi(accNumber string, bank *models.Bank, isOk bool) *ArtaJasaAccountNumberResponse {
+func CallArtaJasaApi(accNumber string, bank *models.Bank) (*ArtaJasaAccountNumberResponse, error) {
 	// TODO: call api here and get response
+	const ENDPOINT = "https://62dfbf45976ae7460bf2b9e6.mockapi.io/api/v1/AccountNumber?accountNumber="
 
-	// NOTE : im mocking the api result
-	if isOk {
+	request, err := NewRequest("GET", ENDPOINT+accNumber, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	response, err := DefaultClient.Do(request)
+	if err != nil {
+		return nil, err
+	}
+
+	defer response.Body.Close()
+
+	var apiReponses []ApiReposnse
+	err = json.NewDecoder(response.Body).Decode(&apiReponses)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(apiReponses) > 0 {
+		// NOTE : im mocking the api result
 		return &ArtaJasaAccountNumberResponse{
 			Status:  "success",
 			Message: "account number found",
@@ -162,14 +193,11 @@ func CallArtaJasaApi(accNumber string, bank *models.Bank, isOk bool) *ArtaJasaAc
 				HolderName    string
 			}{
 				BankName:      bank.Name,
-				AccountNumber: accNumber,
-				HolderName:    "Budi " + bank.Name,
+				AccountNumber: apiReponses[0].AccountNumber,
+				HolderName:    apiReponses[0].Name,
 			},
-		}
+		}, nil
 	}
 
-	return &ArtaJasaAccountNumberResponse{
-		Status:  "fail",
-		Message: "account number not found",
-	}
+	return nil, errors.New("not found")
 }

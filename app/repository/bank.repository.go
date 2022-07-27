@@ -100,17 +100,19 @@ func (r *Repository) GetBankAccountByAccountNumber(accountNumber string, bank mo
 
 func (r *Repository) GetAccountNumberFromArtaJasa(accNumber string, bank *models.Bank, bankAccount *models.BankAccount, isSaveResult bool) error {
 	// Mocking Api Call
-	result := helper.CallArtaJasaApi(accNumber, bank, true)
+	result, err := helper.CallArtaJasaApi(accNumber, bank)
+	if err != nil {
+		return err
+	}
 
 	if result.Status != "success" {
 		return errors.New("not found")
 	}
+
 	// save to db
-	bankAccount = &models.BankAccount{
-		BankID:        bank.ID,
-		Name:          result.Data.HolderName,
-		AccountNumber: result.Data.AccountNumber,
-	}
+	bankAccount.BankID = bank.ID
+	bankAccount.Name = result.Data.HolderName
+	bankAccount.AccountNumber = result.Data.AccountNumber
 
 	if isSaveResult {
 		db, _ := r.Gormdb.GetInstance()
