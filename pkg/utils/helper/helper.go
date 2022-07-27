@@ -1,8 +1,6 @@
 package helper
 
 import (
-	"fmt"
-
 	"github.com/ajikamaludin/api-raya-ojt/app/models"
 	"gorm.io/gorm"
 )
