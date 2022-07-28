@@ -18,15 +18,15 @@ CREATE DATABASE api_raya_ojt
 Clone Project 
 ```bash
 git clone https://github.com/ajikamaludin/api-raya-ojt
+cd api-raya-ojt
 ```
 
-Run Go Mod Tidy
+Run Install Depedency
 ```bash
-cd api-raya-ojt
 go mod tidy
 ```
 
-Setup Env File
+Create env file
 ```bash
 cp .env.example .env
 ```
