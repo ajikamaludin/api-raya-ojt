@@ -55,6 +55,11 @@ func GetInstance() *Configs {
 		JwtExpired, _ := strconv.Atoi(os.Getenv("JWT_EXPIRED_SECOND"))
 
 		GOOGLE_CREDENTIALS := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
+
+		if _, err := os.Stat(GOOGLE_CREDENTIALS); err != nil {
+			panic("GOOGLE APP CREDENTIALS FILE NOT EXISTS")
+		}
+
 		info, _ := os.Stat(GOOGLE_CREDENTIALS)
 		if info.IsDir() {
 			panic("GOOGLE APP CREDENTIALS MUST BE FILE, NOT DIR")
