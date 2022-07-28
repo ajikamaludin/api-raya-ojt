@@ -35,7 +35,7 @@ type BankTransaction struct {
 	ID               uuid.UUID `gorm:"primarykey;type:uuid"`
 	BankAccountId    uuid.UUID `gorm:"type:uuid;default:null"`
 	AccountId        uuid.UUID `gorm:"type:uuid;default:null"`
-	BankId           uuid.UUID `gorm:"type:uuid;default:null"`
+	BankId           uuid.UUID `gorm:"type:uuid;default:null;comment:destination bank"` //Detination Bank
 	UserId           uuid.UUID `gorm:"not null;type:uuid"`
 	Debit            float64   `gorm:"not null;default:0"`
 	Credit           float64   `gorm:"not null;default:0"`

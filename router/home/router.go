@@ -6,11 +6,11 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func Routes(app *fiber.App) {
+func Routes(app *fiber.App, service *services.Services) {
 	route := app.Group("/")
 
 	homeController := controller.HomeController{
-		Serv: services.New(),
+		Serv: service,
 	}
 
 	route.Get("/", homeController.Home)

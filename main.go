@@ -29,7 +29,7 @@ func main() {
 	defer services.Db.Conn.Close()
 
 	// default here : /
-	home.Routes(app)
+	home.Routes(app, services)
 	// api route : api/v1
 	apiv1.Routes(app, services)
 	// handle 404

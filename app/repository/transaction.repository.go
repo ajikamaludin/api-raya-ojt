@@ -66,7 +66,14 @@ func (r *Repository) CreateBankTransaction(trx *models.BankTransaction, bank *mo
 		return err
 	}
 
-	trxDb.Commit()
+	err = trxDb.Commit().Error
+	if err != nil {
+		trxDb.Rollback()
+		return err
+	}
+
+	// Call Pubsub Here With Gorutine
+	go r.GooglePubsub.Publish(constants.TRANSACTION_TOPIC_NAME, trx.ID.String())
 
 	trx.Bank = &models.Bank{}
 	db.First(&trx.Bank, "id = ?", trx.BankId)
@@ -100,6 +107,17 @@ func (r *Repository) GetTransactionById(id string, trx *models.BankTransaction) 
 
 func (r *Repository) GetLatestTransactions(userId uuid.UUID, transactions *[]models.BankTransaction, query string) error {
 	db, _ := r.Gormdb.GetInstance()
+
+	// TODO: leter on
+	// if query != "" {
+	// 	query = `%` + query + `%`
+	// 	var bankaccount []models.BankAccount
+	// 	db.Find(&bankaccount, "name ILIKE ? OR account_number ILIKE ?", query, query)
+	// 	var account []models.Account
+	// 	db.Joins("UserAccount").Find(&account, "Accounts.account_number ILIKE ? OR UserAccount.name ILIKE ? ", query, query)
+
+	// 	fmt.Println(bankaccount, account)
+	// }
 
 	err := db.Order("created_at DESC").
 		Where("debit = 0 AND (bank_account_id IS NOT NULL OR account_id IS NOT NULL)").

@@ -19,3 +19,8 @@ const (
 	TRX_SUCCESS = 1
 	TRX_FAIL    = 2
 )
+
+const (
+	TRANSACTION_TOPIC_NAME      = "aji_created_transaction"
+	TRANSACTION_SUBSCRIBER_NAME = "aji_created_transaction_worker1"
+)

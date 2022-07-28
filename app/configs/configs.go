@@ -33,11 +33,17 @@ type RedisConfig struct {
 	Password string
 }
 
+type GooglePubSubConfig struct {
+	ProjectName string
+	Credentials string
+}
+
 type Configs struct {
-	Appconfig   AppConfig
-	Dbconfig    DbConfig
-	Jwtconfig   JwtConfig
-	Redisconfig RedisConfig
+	Appconfig          AppConfig
+	Dbconfig           DbConfig
+	Jwtconfig          JwtConfig
+	Redisconfig        RedisConfig
+	GooglePubSubConfig GooglePubSubConfig
 }
 
 var lock = &sync.Mutex{}
@@ -47,6 +53,12 @@ func GetInstance() *Configs {
 	if configs == nil {
 		lock.Lock()
 		JwtExpired, _ := strconv.Atoi(os.Getenv("JWT_EXPIRED_SECOND"))
+
+		GOOGLE_CREDENTIALS := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
+		info, _ := os.Stat(GOOGLE_CREDENTIALS)
+		if info.IsDir() {
+			panic("GOOGLE APP CREDENTIALS MUST BE FILE, NOT DIR")
+		}
 
 		configs = &Configs{
 			Appconfig: AppConfig{
@@ -71,6 +83,10 @@ func GetInstance() *Configs {
 				Host:     os.Getenv("REDIS_HOST"),
 				Port:     os.Getenv("REDIS_PORT"),
 				Password: os.Getenv("REDIS_PASSWORD"),
+			},
+			GooglePubSubConfig: GooglePubSubConfig{
+				ProjectName: os.Getenv("GOOGLE_PROJECT_NAME"),
+				Credentials: os.Getenv("GOOGLE_APPLICATION_CREDENTIALS"),
 			},
 		}
 		lock.Unlock()
