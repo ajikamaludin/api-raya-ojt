@@ -108,16 +108,45 @@ func (r *Repository) GetTransactionById(id string, trx *models.BankTransaction) 
 func (r *Repository) GetLatestTransactions(userId uuid.UUID, transactions *[]models.BankTransaction, query string) error {
 	db, _ := r.Gormdb.GetInstance()
 
-	// TODO: leter on
-	// if query != "" {
-	// 	query = `%` + query + `%`
-	// 	var bankaccount []models.BankAccount
-	// 	db.Find(&bankaccount, "name ILIKE ? OR account_number ILIKE ?", query, query)
-	// 	var account []models.Account
-	// 	db.Joins("UserAccount").Find(&account, "Accounts.account_number ILIKE ? OR UserAccount.name ILIKE ? ", query, query)
+	if query != "" {
+		query = `%` + query + `%`
+		var bankaccounts []models.BankAccount
+		db.Find(&bankaccounts, "name ILIKE ? OR account_number ILIKE ?", query, query)
+		var listBankAccount []string
+		for _, bankAccount := range bankaccounts {
+			listBankAccount = append(listBankAccount, bankAccount.ID.String())
+		}
 
-	// 	fmt.Println(bankaccount, account)
-	// }
+		var accounts []models.Account
+		db.Where(`Accounts.account_number ILIKE ? OR "UserAccount"."name" ILIKE ? `, query, query).Joins("UserAccount").Find(&accounts)
+
+		var listAccount []string
+		for _, account := range accounts {
+			listAccount = append(listAccount, account.ID.String())
+		}
+
+		sqld := db.Order("created_at DESC")
+		if len(listAccount) > 0 {
+			sqld = sqld.Where(map[string]interface{}{"account_id": listAccount})
+			if len(listBankAccount) > 0 {
+				sqld = sqld.Or(map[string]interface{}{"bank_account_id": listBankAccount})
+			}
+		} else {
+			if len(listBankAccount) > 0 {
+				sqld = sqld.Where(map[string]interface{}{"bank_account_id": listBankAccount})
+			}
+		}
+
+		sqld = sqld.Where("debit = 0 AND (bank_account_id IS NOT NULL OR account_id IS NOT NULL)").
+			Preload("Bank").
+			Preload("Bankaccount").
+			Preload("RayaAccount.UserAccount").
+			Preload("TransactionFee")
+
+		err := sqld.Find(&transactions, "user_id = ?", userId).Error
+
+		return err
+	}
 
 	err := db.Order("created_at DESC").
 		Where("debit = 0 AND (bank_account_id IS NOT NULL OR account_id IS NOT NULL)").
